@@ -2,10 +2,10 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 class Category(models.Model):
-    """Stores information on the categories of products that are sold"""
+    """Category model stores information on the categories of products that are sold"""
     CATEGORY_CHOICES = [
-        ('tshirts', 'T-Shirts'),
-        ('mugs', 'Mugs'),
+        ('T-Shirts', 'T-Shirts'),
+        ('Mugs', 'Mugs'),
     ]
     
     category_name = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
@@ -15,13 +15,14 @@ class Category(models.Model):
         """auto-populate slug field"""
         if not self.slug:
             self.slug = slugify(self.category_name)
-        return super.save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.category_name
 
 
 class Product(models.Model):
+    """Product model stores information on the products that are sold"""
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     product_name = models.CharField(max_length=255)
 
@@ -34,7 +35,7 @@ class Product(models.Model):
         """auto-populate slug field"""
         if not self.slug:
             self.slug = slugify(self.product_name)
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return self.product_name
