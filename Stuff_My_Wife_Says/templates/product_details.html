@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ product.product_name }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-6 text-center border p-5">
+            <img src="{{ product.image.url }}" alt="{{ product.category.category_name }}: {{ product.product_name }}"/>
+        </div>
+        <div class="col-6">
+            <h5>{{ product.product_name }}</h5>
+            <p class="text-secondary small">{{ product.price }}</p>
+            <form method="">
+                {% csrf_token %}
+                {% if product.category.category_name == "tshirts" %}
+                <p>Size:</p>
+                {{ form.size | crispy }}
+                <p>Quantity</p>
+                {{ form.quantity | crispy }}
+
+                {% else %}
+                <p>Quantity</p>
+                {{ form.quantity | crispy }}
+                {% endif %}
+
+                <input type="submit" value="Add to Cart" class="btn btn-primary">
+                <a href="{% url 'products' product.category.id %}" class="btn btn-secondary">Back to Products</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!--<img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">-->
