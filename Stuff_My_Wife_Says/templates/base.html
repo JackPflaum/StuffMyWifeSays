@@ -18,6 +18,41 @@
   
 <body>
 
+  <nav class="navbar navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'home' %}">Stuff My Wife Says</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Products
+          </a>
+          {% if categories %}
+            <div class="dropdown-menu" aria-labelledby="productsDropdown">
+              {% for category in categories %}
+                <a class="dropdown-item" href="{% url 'products' category.pk %}">{{ category.category_name }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'about' %}">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Shopping Cart</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
 {% if messages %}
     {% for message in messages %}
     <div class="container-fluid p-0">
