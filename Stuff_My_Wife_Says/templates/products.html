@@ -2,8 +2,26 @@
 
 {% load static %}
 
-{% block title %}{{ products.category_name }}{% endblock %}
+{% block title %}{{ products.category }}{% endblock %}
 
 {% block content%}
+<div class="container">
+    <h1>Products</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            {% for product in products %}
+            <div class="card mb-2">
+                <a href="{% url 'product_details' product.pk %}" title="{{ product.product_name }}"><img class="card-img-top" src="{% static product.image %}" alt="{{ product.product_name }}"></a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.product_name }}</h5>
+                    <p class="card-text">{{ product.price }}</h5>
+                    <a href="#" class="btn btn-primary">Add to Cart</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}
