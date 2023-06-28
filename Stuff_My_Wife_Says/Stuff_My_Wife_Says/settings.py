@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'shop',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +128,10 @@ STATIC_ROOT = 'staticfiles'
 STATICFILES_DIR = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+# Media files uploaded through model fields are stored in the media folder. Include ImageField and FileField.
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # absolute filesystem path to media folder i.e Stuff_My_Wife_Says/media
+MEDIA_URL = '/media/' # The URL prefix for serving media files. A portion of the URL path that comes before the specific endpoint
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
