@@ -60,7 +60,7 @@ ROOT_URLCONF = 'Stuff_My_Wife_Says.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # get templates from tha root directory
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # get templates from the root directory
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +68,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # context processor for dynamic navbar content i.e. Products dropdown menu
+                'shop.context_processors.navbar_context',
             ],
         },
     },
@@ -121,10 +124,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/' # base url from which static files will be served
 
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') # absolute file path to static folder
 
+# additional locations where django will look for static files
 STATICFILES_DIR = (
     os.path.join(BASE_DIR, 'static'),
 )
