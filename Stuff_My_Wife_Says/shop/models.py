@@ -8,7 +8,7 @@ class Category(models.Model):
         ('Mugs', 'Mugs'),
     ]
     
-    category_name = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    category_name = models.CharField(max_length=50, choices=CATEGORY_CHOICES, unique=True)
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
