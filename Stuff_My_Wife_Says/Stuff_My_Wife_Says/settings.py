@@ -35,7 +35,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',  
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'shop',
     'crispy_forms',
 ]
+
+# allows you to specify the template pack for rendering crispy forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -126,12 +129,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/' # base url from which static files will be served
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static') # absolute file path to static folder
+# absolute file path to static folder where django collects static files from your
+# various apps and places them when you run the 'collectstatic' command.
+# I am omitting this code because I am directly placing static files in main static folder.
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static') 
 
 # additional locations where django will look for static files
-STATICFILES_DIR = (
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-)
+]
 
 # Media files uploaded through model fields are stored in the media folder. Include ImageField and FileField.
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # absolute filesystem path to media folder i.e Stuff_My_Wife_Says/media
