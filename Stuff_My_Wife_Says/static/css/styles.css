@@ -1,14 +1,23 @@
 /*--------------------------------------Generic Styles-----------------------------------------*/
-
-
+body {
+    background-color: white;
+}
 
 
 
 /*--------------------------------------Home Page-----------------------------------------*/
-
-
+body img {
+    width: 300px;
+    height: auto;
+}
 
 
 
 
 /*--------------------------------------Products Page-----------------------------------------*/
+.categories-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    margin-bottom: 10px;
+}

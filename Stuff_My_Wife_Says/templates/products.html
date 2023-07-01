@@ -6,20 +6,34 @@
 
 {% block content%}
 <div class="container">
-    <h1>Products</h1>
+    <header>
+        <h1 class="pb-2">{{ category }}</h1>
+    </header>
 
     <div class="row">
-        <div class="col-md-4">
-            {% for product in products %}
-            <div class="card mb-2">
-                <a href="{% url 'product_details' product.pk %}" title="{{ product.product_name }}"><img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.product_name }}"></a>
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.product_name }}</h5>
-                    <p class="card-text">{{ product.price }}</h5>
-                    <a href="#" class="btn btn-primary">Add to Cart</a>
+        <div class="col-lg-2 col-md-4 col-sm-12 categories-column">
+            <h4>Categories</h4>
+            {% if categories %}
+                {% for category in categories %}
+                    <a href="#">{{ category.category_name }}</a>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-lg-10 col-md-8 col-sm-12">
+            <div class="row">
+                {% for product in products %}
+                <div class="col-lg-3 col-md-4 col-sm-12">
+                    <div class="card mb-2">
+                        <a href="{% url 'product_details' product.pk %}" title="{{ product.product_name }}"><img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.product_name }}"></a>
+                        <div class="card-body">
+                            <h6 class="card-title">{{ product.product_name }}</h6>
+                            <p class="card-text">${{ product.price }}</p>
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                        </div>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 </div>

@@ -16,7 +16,7 @@ class CategoryView(TemplateView):
 def products(request, pk):
     category = get_object_or_404(Category, pk=pk)
     products = Product.objects.filter(category=category).order_by('price')
-    return render(request, 'products.html', {'products': products})
+    return render(request, 'products.html', {'category': category,'products': products})
 
 
 def product_details(request, pk):
