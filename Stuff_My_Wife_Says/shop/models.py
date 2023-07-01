@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 import os
 from django.conf import settings
 from django.core.files import File
+import uuid
 
 class Category(models.Model):
     """Category model stores information on the categories of products that are sold"""
@@ -50,3 +51,39 @@ class Product(models.Model):
     
     def __str__(self):
         return self.product_name
+
+
+class ShoppingCartSession(models.Model):
+
+    STATUS_CHOICES = [('open', 'Open'), ('closed', 'Closed'), ('abandoned', 'Abandoned')]
+
+    # a new uuid (unique identifier) value is generated using the uuid4() function each time a new object is created
+    cart_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='open')
+    modified = models.DateTimeField(auto_now=True)
+
+    def order_total_price(self):
+        """Calculates the total price of the order. It uses the cart_items related name from ShoppingCartItem
+        to get the query_set of cart items. It than iterate over each item and calculate the specific
+        items total price based on it's quantity and price."""
+        total_price = sum(item.calculate_cart_item_price() for item in self.cart_items.all())
+        return total_price
+
+class ShoppingCartItem(models.Model):
+
+    SHIRT_SIZE_CHOICES = [('small', 'Small'), ('medium', 'Medium'), ('large', 'Large'), ('xlarge', 'XLarge')]
+
+    cart = models.ForeignKey(ShoppingCartSession, on_delete=models.CASCADE, related_name='cart_items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    tshirt_size = models.CharField(max_length=15, choices=SHIRT_SIZE_CHOICES, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def calculate_cart_item_price(self):
+        """calculate the total price of the cart item based on the quantity ordered"""
+        return self.quantity * self.product.price
+
+
+
