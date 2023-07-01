@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Shopping Cart{% endblock %}
+
+
+{% block content %}
+<h3>Shopping Cart</h3>
+<hr>
+{% if shopping_cart.exists %}
+<table class="table text-center">
+    <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th></th>
+    </tr>
+    {% for product in cart %}
+    <tr>
+        <td>{{ product.image }}</td>
+        <td>{{ product.product_name }}</td>
+        <td>${{ product.price }}</td>
+        <td>{{  }}</td>
+        <td>{{  }}</td>
+        <td><input type="submit" value="Remove" class="btn btn-secondary"></td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><input type="submit" value="Update"></td>
+    </tr>
+</table>
+{% elif %}
+
+<p>Shopping cart is empty.</p>
+
+{% endif %}
+
+{% endblock %}
+
+<!--<img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">-->
