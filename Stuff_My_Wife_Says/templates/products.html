@@ -28,7 +28,7 @@
                         <div class="card-body">
                             <h6 class="card-title">{{ product.product_name }}</h6>
                             <p class="card-text">${{ product.price }}</p>
-                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                            <a href="{% url 'product_details' product.pk %}" class="btn btn-primary">Add to Cart</a>
                         </div>
                     </div>
                 </div>
