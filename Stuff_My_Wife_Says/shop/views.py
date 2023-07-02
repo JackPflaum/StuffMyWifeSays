@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
-from .models import Category, Product, ShoppingCartSession
+from .models import Category, Product, ShoppingCartSession, ShoppingCartItem
 from .forms import AddProductToCartForm
 from django.contrib.sessions.models import Session
+import uuid
 
 
 class HomePageView(TemplateView):
@@ -27,11 +28,36 @@ def product_details(request, pk):
     if request.method == 'POST':
         form = AddProductToCartForm(request.POST)
         if form.is_valid():
-            # do something
-            # check is current Session has cart_uuid
-            # if yes then add item to current ShoppingCartSession
-            # if no then create cart and add cart_uuid to Session
-            return redirect('products', pk=pk)
+            cart_uuid = request.session.get('cart_uuid')
+            if cart_uuid is not None:
+                try:
+                    #get shoppingcartsession obj
+                    # get or filter ShoppingCartItem obj by shoppingcartsession
+                    # if exists overwrite details or create obj and add with form details.
+                    # if exists, then adjust template so it lets the user know if they have
+                    # added to shoppingcart and if they want to change details.
+                    pass
+                except ShoppingCartSession.DoesNotExist:
+                    pass
+            else:
+                # create uuid and store it under 'cart_uuid' in 'request.session' dictionary.
+                cart_uuid = uuid.uuid4()
+                request.session['cart_uuid'] = str(cart_uuid)
+
+                # create 'ShoppingCartSession' obj and save session uuid to it.
+                cart = ShoppingCartSession()
+                cart.cart_uuid = cart_uuid
+                cart.save()
+                
+                # create 'ShoppingCartItem' obj and save form details to it.
+                cart_item = ShoppingCartItem(cart=cart)
+                cart_item.product = Product.object.get(pk=pk)
+                cart_item.quantity = form.cleaned_data['quantity']
+                cart_item.size = form.cleaned_data['size']
+                # cart_item.save()
+                
+                # return back to products page
+                return redirect('products', pk=product.category.pk)
     else:
         form = AddProductToCartForm()
         context = {'form': form, 'product': product}
@@ -43,11 +69,20 @@ class AboutView(TemplateView):
     template_name = 'about_us.html'
 
 
+def contact(request):
+    return render(request, 'contact.html', {})
+
+
 def shopping_cart(request):
-    # if cart_id (uuid) exists then render shopping_cart html otherwise render no_cart html
-    cart_uuid = request.Session['cart_uuid']
+    """displays the users current shopping cart session if it exists."""
+    # if cart_uuid exists in session then look for cart_uuid in ShoppingCartSession object.
+    # render shopping_html html otherwise render no_cart html if no object exists.
+    cart_uuid = request.session.get('cart_uuid')
     if cart_uuid is not None:
-        shopping_cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
-        return render(request, 'hopping_cart.html', {'shopping_cart': shopping_cart})
+        try:
+            shopping_cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
+            return render(request, 'hopping_cart.html', {'shopping_cart': shopping_cart})
+        except ShoppingCartSession.DoesNotExist:
+            return render(request, 'no_shopping_cart.html', {})
     else:
         return render(request, 'no_shopping_cart.html', {})

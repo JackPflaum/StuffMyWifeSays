@@ -13,7 +13,7 @@ urlpatterns = [
     # path('checkout/<int:pk>', views.checkout, name='checkout'),
     # path('purchase_confirmed/<int:pk>', views.purchase_confirmed, name='purchase_confirmed'),
     path('about/', AboutView.as_view(), name='about'),
-    # path('contact/', views.contact, name='contact'),
+    path('contact/', views.contact, name='contact'),
 ]
 
 # adding media URL pattern and configuration for serving media files during development.
