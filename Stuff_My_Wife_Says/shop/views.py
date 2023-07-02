@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
 from .models import Category, Product, ShoppingCartSession, ShoppingCartItem
-from .forms import AddProductToCartForm
+from .forms import AddTShirtToCartForm, AddMugToCartForm
 from django.contrib.sessions.models import Session
 import uuid
 
@@ -22,11 +22,11 @@ def products(request, pk):
 
 
 def product_details(request, pk):
-    """diplay product information and form for product quantity and size"""
+    """diplay product information and allow users to add products to cart."""
     product = get_object_or_404(Product, pk=pk)
 
     if request.method == 'POST':
-        form = AddProductToCartForm(request.POST)
+        form = AddTShirtToCartForm(request.POST)
         if form.is_valid():
             cart_uuid = request.session.get('cart_uuid')
             if cart_uuid is not None:
@@ -59,7 +59,7 @@ def product_details(request, pk):
                 # return back to products page
                 return redirect('products', pk=product.category.pk)
     else:
-        form = AddProductToCartForm()
+        form = AddTShirtToCartForm()
         context = {'form': form, 'product': product}
         return render(request, 'product_details.html', context)
         
