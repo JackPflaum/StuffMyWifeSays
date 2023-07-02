@@ -58,7 +58,7 @@ class ShoppingCartSession(models.Model):
     STATUS_CHOICES = [('open', 'Open'), ('closed', 'Closed'), ('abandoned', 'Abandoned')]
 
     # a new uuid (unique identifier) value is generated using the uuid4() function each time a new object is created
-    cart_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    cart_uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='open')
     modified = models.DateTimeField(auto_now=True)
