@@ -35,6 +35,44 @@
                 {% endfor %}
             </div>
         </div>
+        <!-----------------pagination------------------>
+        <div class="pagination">
+            <ul>
+                {% if products.has_previous %}
+                <li>
+                    <a href="?page={{ products.previous_page_number }}" class="previous">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i> Prev 
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for page in products.paginator.page_range %}
+                    {% if products.number == page %}
+                    <li class="active">
+                        <span>{{ products.number }}</span>
+                    </li>
+                    {% endif %}
+
+                    {% comment %} {% if %} {% endcomment %}
+                    <li>
+                        <a href="">
+                        </a>
+                    </li>
+                    {% comment %} {% endif %} {% endcomment %}
+
+                <li>
+                    <a href="">
+                    </a>
+                </li>
+                {% endfor %}
+
+                {% if products.has_next %}
+                <li>
+                    <a></a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </div>
 

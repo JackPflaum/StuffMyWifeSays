@@ -4,6 +4,8 @@ from .models import Category, Product, ShoppingCartSession, ShoppingCartItem
 from .forms import AddTShirtToCartForm, AddMugToCartForm
 from django.contrib.sessions.models import Session
 import uuid
+from django.core.paginator import Paginator
+
 
 
 class HomePageView(TemplateView):
@@ -16,9 +18,23 @@ class CategoryView(TemplateView):
 
 
 def products(request, pk):
+    """products page to display products available to the customer in card format."""
     category = get_object_or_404(Category, pk=pk)
     products = Product.objects.filter(category=category).order_by('price')
-    return render(request, 'products.html', {'category': category,'products': products})
+
+    # create Paginator object and pass query_set and number of items per page
+    paginator = Paginator(products, 2)
+
+    # get the current page number from the request's query paramaters
+    page_number = request.GET.get('page')
+
+    # get the page object for the current page
+    page_obj_products = paginator.get_page(page_number)
+
+    # pass page object into context dictionary
+    context = {'products': page_obj_products}
+
+    return render(request, 'products.html', context)
 
 
 def product_details(request, pk):
