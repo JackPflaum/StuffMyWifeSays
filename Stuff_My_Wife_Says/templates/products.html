@@ -28,13 +28,48 @@
                         <div class="card-body">
                             <h6 class="card-title">{{ product.product_name }}</h6>
                             <p class="card-text">${{ product.price }}</p>
-                            <a href="{% url 'product_details' product.pk %}" class="btn btn-primary">Add to Cart</a>
+                            <a href="{% url 'product_details' product.pk %}" class="btn btn-primary">View Product</a>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
+    </div>
+    
+    <!-----------------pagination------------------>
+    <div class="pagination_rounded">
+        <ul>
+            {% if products.has_previous %}
+            <li>
+                <a href="?page={{ products.previous_page_number }}" class="prev">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i> Prev 
+                </a>
+            </li>
+            {% endif %}
+
+            {% for page in products.paginator.page_range %}
+                {% if products.number == page %}
+                <li>
+                    <span class="current_page">{{ products.number }}</span>
+                </li>
+                {% else %}
+                <li>
+                    <a href="?page={{ page }}">
+                        {{ page }}
+                    </a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if products.has_next %}
+            <li>
+                <a href="?page={{ products.next_page_number }}" class="next">
+                    Next <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
     </div>
 </div>
 
