@@ -29,6 +29,8 @@ def products(request, pk):
     page_number = request.GET.get('page')
 
     # get the page object for the current page
+    # get_page() method will return last page if page_number is outside range or
+    # first page if page_number isn't a valid number.
     page_obj_products = paginator.get_page(page_number)
 
     # pass page object into context dictionary

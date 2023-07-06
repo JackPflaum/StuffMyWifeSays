@@ -24,11 +24,21 @@ body img {
 
 
 /*--------------------------------------Products Pagination-----------------------------------------*/
-.pagination_rounded, .pagination_square {
-    display: inline-block;
-    margin-left:400px;
-    margin-top:300px;
+
+/*pushes paginator down to the bottom of the screen*/
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
 }
+
+/*centers the paginator*/
+.pagination_rounded {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+}
+
 
 .pagination_rounded ul {
     margin: 0;
@@ -64,7 +74,8 @@ a:link {
 }
 
 
-.pagination_rounded ul li a {
+.pagination_rounded ul li a,
+.pagination_rounded ul li .current_page {
     float: left;
     color: #4285f4;
     border-radius: 50%;
@@ -76,6 +87,11 @@ a:link {
     border: 1px solid #e0e0e0;
 }
 
+
+.current_page {
+    color: black!important;
+}
+
 .pagination_rounded .prev i {
     margin-right: 10px;
 }
@@ -85,8 +101,4 @@ a:link {
     width: 90px;
     height: 34px;
     line-height: 34px;
-}
-
-.visible-xs {
-    display: none!important;
 }
