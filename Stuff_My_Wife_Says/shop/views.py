@@ -111,13 +111,15 @@ def contact(request):
 
 def shopping_cart(request):
     """displays the users current shopping cart session if it exists."""
-    # if cart_uuid exists in session then look for cart_uuid in ShoppingCartSession object.
+    # if cart_uuid exists in session then look for cart_uuid in ShoppingCartSession object
+    # and then get shopping cart items.
     # render shopping_html html otherwise render no_cart html if no object exists.
     cart_uuid = request.session.get('cart_uuid')
     if cart_uuid is not None:
         try:
             shopping_cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
-            return render(request, 'shopping_cart.html', {'shopping_cart': shopping_cart})
+            shopping_cart_items = ShoppingCartItem.objects.filter(cart=shopping_cart)
+            return render(request, 'shopping_cart.html', {'shopping_cart_items': shopping_cart_items})
         except ShoppingCartSession.DoesNotExist:
             return render(request, 'no_shopping_cart.html', {})
     else:
