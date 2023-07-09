@@ -17,5 +17,5 @@ class AddMugToCartForm(forms.Form):
     """Mug product details form for quantity of mugs"""
     quantity = forms.TypedChoiceField(label='Quantity:',
                                       coerce=int,
-                                      choice=QUANTITY_CHOICES,
+                                      choices=QUANTITY_CHOICES,
                                       widget=forms.Select(attrs={'class': 'form-control'}))
