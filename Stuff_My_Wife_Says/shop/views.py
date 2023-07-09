@@ -40,7 +40,7 @@ def products(request, pk):
 
 
 def product_details(request, pk):
-    """diplay product information and allow users to add products to cart."""
+    """diplay product information and allow users to add product to cart."""
     product = get_object_or_404(Product, pk=pk)
 
     # retrieve the form for the corresponding product.
@@ -50,22 +50,20 @@ def product_details(request, pk):
     else:
         form = AddMugToCartForm(request.POST or None)
 
-    # handle form submission
+    # handle form submission data
     if request.method == 'POST' and form.is_valid():
             cart_uuid = request.session.get('cart_uuid')
+            
+            # if the user has a cart_uuid than get ShoppingCartSession and add item to cart
             if cart_uuid is not None:
-                print('cart_uuid', cart_uuid)
                 try:
-                    #get shoppingcartsession obj
-                    # get or filter ShoppingCartItem obj by shoppingcartsession
-                    # if exists overwrite details or create obj and add with form details.
-                    # if exists, then adjust template so it lets the user know if they have
-                    # added to shoppingcart and if they want to change details.
+                    # get users shopping cart session, create shopping cart item and add form data
                     cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
                     cart_item = ShoppingCartItem(cart=cart)
                     cart_item.product = product
                     cart_item.quantity = form.cleaned_data['quantity']
 
+                    # check if form has size field for T-shirts
                     if 'size' in form.fields:
                         cart_item.tshirt_size = form.cleaned_data['size']
                     cart_item.save()
@@ -75,6 +73,7 @@ def product_details(request, pk):
                 except ShoppingCartSession.DoesNotExist:
                     pass
             else:
+                # if the user doesn't have a cart session than
                 # create uuid and store it under 'cart_uuid' in 'request.session' dictionary.
                 cart_uuid = uuid.uuid4()
                 request.session['cart_uuid'] = str(cart_uuid)
@@ -118,7 +117,7 @@ def shopping_cart(request):
     if cart_uuid is not None:
         try:
             shopping_cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
-            return render(request, 'hopping_cart.html', {'shopping_cart': shopping_cart})
+            return render(request, 'shopping_cart.html', {'shopping_cart': shopping_cart})
         except ShoppingCartSession.DoesNotExist:
             return render(request, 'no_shopping_cart.html', {})
     else:
