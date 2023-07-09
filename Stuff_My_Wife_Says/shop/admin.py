@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, ShoppingCartSession, ShoppingCartItem
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['category_name', 'slug']
+
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['category_name', 'product_name', 'price', 'image', 'slug']
@@ -14,5 +15,16 @@ class ProductAdmin(admin.ModelAdmin):
         # can therefore access category_name field.
         return obj.category.category_name
 
+
+class ShoppingCartSessionAdmin(admin.ModelAdmin):
+    list_display = ['cart_uuid', 'created_at', 'status', 'modified']
+
+
+class ShoppingCartItemAdmin(admin.ModelAdmin):
+    list_display = ['product', 'quantity', 'tshirt_size', 'created_at', 'modified_at']
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(ShoppingCartSession, ShoppingCartSessionAdmin)
+admin.site.register(ShoppingCartItem, ShoppingCartItemAdmin)
