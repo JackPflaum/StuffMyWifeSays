@@ -43,18 +43,35 @@ def product_details(request, pk):
     """diplay product information and allow users to add products to cart."""
     product = get_object_or_404(Product, pk=pk)
 
-    if request.method == 'POST':
-        form = AddTShirtToCartForm(request.POST)
-        if form.is_valid():
+    # retrieve the form for the corresponding product.
+    # get the tshirt form, otherwise get the mug form.
+    if product.category.category_name == 'T-Shirts':
+        form = AddTShirtToCartForm(request.POST or None)
+    else:
+        form = AddMugToCartForm(request.POST or None)
+
+    # handle form submission
+    if request.method == 'POST' and form.is_valid():
             cart_uuid = request.session.get('cart_uuid')
             if cart_uuid is not None:
+                print('cart_uuid', cart_uuid)
                 try:
                     #get shoppingcartsession obj
                     # get or filter ShoppingCartItem obj by shoppingcartsession
                     # if exists overwrite details or create obj and add with form details.
                     # if exists, then adjust template so it lets the user know if they have
                     # added to shoppingcart and if they want to change details.
-                    pass
+                    cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
+                    cart_item = ShoppingCartItem(cart=cart)
+                    cart_item.product = product
+                    cart_item.quantity = form.cleaned_data['quantity']
+
+                    if 'size' in form.fields:
+                        cart_item.tshirt_size = form.cleaned_data['size']
+                    cart_item.save()
+
+                    return redirect('products', pk=product.category.pk)
+                    
                 except ShoppingCartSession.DoesNotExist:
                     pass
             else:
@@ -69,15 +86,17 @@ def product_details(request, pk):
                 
                 # create 'ShoppingCartItem' obj and save form details to it.
                 cart_item = ShoppingCartItem(cart=cart)
-                cart_item.product = Product.object.get(pk=pk)
+                cart_item.product = product
                 cart_item.quantity = form.cleaned_data['quantity']
-                cart_item.size = form.cleaned_data['size']
-                # cart_item.save()
+
+                # check if form has size field for T-shirts
+                if 'size' in form.fields:
+                    cart_item.tshirt_size = form.cleaned_data['size']
+                cart_item.save()
                 
                 # return back to products page
                 return redirect('products', pk=product.category.pk)
-    else:
-        form = AddTShirtToCartForm()
+    else:        
         context = {'form': form, 'product': product}
         return render(request, 'product_details.html', context)
         
