@@ -21,7 +21,11 @@ class ShoppingCartSessionAdmin(admin.ModelAdmin):
 
 
 class ShoppingCartItemAdmin(admin.ModelAdmin):
-    list_display = ['product', 'quantity', 'tshirt_size', 'created_at', 'modified_at']
+    list_display = ['cart_uuid', 'product', 'quantity', 'tshirt_size', 'created_at', 'modified_at']
+
+    def cart_uuid(self, obj):
+        """retrieve cart_uuid connected to product item"""
+        return obj.cart.cart_uuid
 
 
 admin.site.register(Category, CategoryAdmin)
