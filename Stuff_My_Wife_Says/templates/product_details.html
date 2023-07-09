@@ -15,18 +15,18 @@
         </div>
         <div class="col-6">
             <h5>{{ product.product_name }}</h5>
-            <p class="text-secondary small">{{ product.price }}</p>
-            <form method="">
+            <p class="text-secondary small">${{ product.price }}</p>
+            <form method="post">
                 {% csrf_token %}
-                {% if product.category.category_name == "tshirts" %}
+                {% if product.category.category_name == "T-Shirts" %}
                 <p>Size:</p>
-                {{ form.size | crispy }}
+                {{ form.size }}
                 <p>Quantity</p>
-                {{ form.quantity | crispy }}
+                {{ form.quantity }}
 
                 {% else %}
                 <p>Quantity</p>
-                {{ form.quantity | crispy }}
+                {{ form.quantity }}
                 {% endif %}
 
                 <input type="submit" value="Add to Cart" class="btn btn-primary">
