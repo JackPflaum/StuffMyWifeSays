@@ -119,7 +119,9 @@ def shopping_cart(request):
         try:
             shopping_cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
             shopping_cart_items = ShoppingCartItem.objects.filter(cart=shopping_cart)
-            return render(request, 'shopping_cart.html', {'shopping_cart_items': shopping_cart_items})
+
+            return render(request, 'shopping_cart.html', {'shopping_cart_items': shopping_cart_items,
+                                                          'shopping_cart': shopping_cart})
         except ShoppingCartSession.DoesNotExist:
             return render(request, 'no_shopping_cart.html', {})
     else:
