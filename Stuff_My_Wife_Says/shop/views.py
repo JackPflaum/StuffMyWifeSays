@@ -126,3 +126,22 @@ def shopping_cart(request):
             return render(request, 'no_shopping_cart.html', {})
     else:
         return render(request, 'no_shopping_cart.html', {})
+
+
+def remove_item(request, pk):
+    """removes item from shopping cart"""
+    cart_uuid = request.session['cart_uuid']
+    shopping_cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
+    shopping_cart_item = ShoppingCartItem.objects.get(pk=pk)
+    shopping_cart_item.delete()
+
+    return redirect('shopping_cart')
+
+
+def update_shopping_cart(request):
+    """updates shopping cart with new total price based on the user increasing or reducing
+    the quantity of an item"""
+    pass
+
+def checkout(request):
+    pass

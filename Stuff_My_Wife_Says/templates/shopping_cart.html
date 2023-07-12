@@ -8,11 +8,11 @@
 <hr>
 <table class="table text-center">
     <tr>
-        <th>Image</th>
-        <th>Product</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Total</th>
+        <th>IMAGE</th>
+        <th>PRODUCT</th>
+        <th>PRICE</th>
+        <th>QUANTITY</th>
+        <th>TOTAL</th>
         <th></th>
     </tr>
     {% for item in shopping_cart_items %}
@@ -23,7 +23,7 @@
         <td>${{ item.product.price }}</td>
         <td>{{ item.quantity }}</td>
         <td>${{ item.calculate_cart_item_price }}</td>
-        <td><input type="submit" value="Remove" class="btn btn-secondary"></td>
+        <td><a href="{% url 'remove_item' item.pk %}">Remove</a><td>
     </tr>
     {% endfor %}
     <tr>
@@ -32,6 +32,7 @@
         <td></td>
         <td><input type="submit" value="Update" class="btn btn-primary"></td>
         <td>${{ shopping_cart.order_total_price }}</td>
+        <td><a href="#" class="btn btn-primary">Remove</a></td>
     </tr>
 </table>
 
