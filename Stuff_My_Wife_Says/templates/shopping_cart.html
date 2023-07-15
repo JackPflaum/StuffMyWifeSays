@@ -24,7 +24,13 @@
         <td>{{ item.product.product_name }}</td>
         <td>{% if item.tshirt_size %} {{ item.tshirt_size }} {% else %} - {% endif %}</td>
         <td>${{ item.product.price }}</td>
-        <td><input type="number" value="{{ item.quantity }}" min="1" data-item-id="{{ item.pk }}"></td>
+        <td>
+            <div class="quantity-control">
+                <button class="quantity-minus" data-item-id="{{ item.pk }}">-</button>
+                <span class="quantity-display" data-item-id="{{ item.pk }}">{{ item.quantity }}</span>
+                <button class="quantity-plus" data-item-id="{{ item.pk }}">+</button>
+            </div>
+        </td>
         <td>${{ item.calculate_cart_item_price }}</td>
         <td><a href="{% url 'remove_item' item.pk %}" class="btn btn-secondary">Remove</a><td>  
     </tr>
@@ -35,9 +41,59 @@
         <td></td>
         <td></td>
         <td><input type="submit" value="Update" class="btn btn-primary"></td>
-        <td>${{ shopping_cart.order_total_price }}</td>
+        <td class="total-price">${{ shopping_cart.order_total_price }}</td>
         <td><a href="#" class="btn btn-primary">Checkout</a></td>
     </tr>
 </table>
 
+<!--plus and minus functionality for item quantity and dynamic prices-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+      // Quantity minus button
+      $('.quantity-minus').click(function(e) {
+        e.preventDefault();
+        var itemId = $(this).data('item-id');
+        var quantityDisplay = $('.quantity-display[data-item-id="' + itemId + '"]');
+        var currentQuantity = parseInt(quantityDisplay.text());
+        if (currentQuantity > 1) {
+          quantityDisplay.text(currentQuantity - 1);
+          updateItemPrice(itemId);
+          updateTotalPrice();
+        }
+      });
+    
+      // Quantity plus button
+      $('.quantity-plus').click(function(e) {
+        e.preventDefault();
+        var itemId = $(this).data('item-id');
+        var quantityDisplay = $('.quantity-display[data-item-id="' + itemId + '"]');
+        var currentQuantity = parseInt(quantityDisplay.text());
+        quantityDisplay.text(currentQuantity + 1);
+        updateItemPrice(itemId);
+        updateTotalPrice();
+      });
+    
+      // Update item price function
+      function updateItemPrice(itemId) {
+        var quantityDisplay = $('.quantity-display[data-item-id="' + itemId + '"]');
+        var quantity = parseInt(quantityDisplay.text());
+        var itemPrice = parseFloat(quantityDisplay.closest('tr').find('td:eq(3)').text().replace('$', ''));
+        var totalPrice = quantity * itemPrice;
+        $('.quantity-display[data-item-id="' + itemId + '"]').closest('tr').find('td:eq(5)').text('$' + totalPrice.toFixed(2));
+      }
+    
+      // Update total price function
+      function updateTotalPrice() {
+        var total = 0;
+        $('.quantity-display').each(function() {
+          var quantity = parseInt($(this).text());
+          var itemPrice = parseFloat($(this).closest('tr').find('td:eq(3)').text().replace('$', ''));
+          total += quantity * itemPrice;
+        });
+        $('.total-price').text('$' + total.toFixed(2));
+      }
+    });
+</script>
+    
 {% endblock %}
