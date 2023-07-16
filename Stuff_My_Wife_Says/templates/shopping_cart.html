@@ -19,12 +19,19 @@
     </tr>
     {% for item in shopping_cart_items %}
     <tr>
-        <td><img src="{{ item.product.image.url }}" alt="{{ item.product.category.category_name }}: {{ item.product.product_name}}">
-            {{ item.image }}</td> 
-        <td>{{ item.product.product_name }}</td>
+        <td><a href="{% url 'product_details' item.product.pk %}">
+          <img src="{{ item.product.image.url }}" alt="{{ item.product.category.category_name }}: {{ item.product.product_name}}">
+        </a></td> 
+        <td><a href="{% url 'product_details' item.product.pk %}">{{ item.product.product_name }}</a></td>
         <td>{% if item.tshirt_size %} {{ item.tshirt_size }} {% else %} - {% endif %}</td>
         <td>${{ item.product.price }}</td>
-        <td><input type="number" value="{{ item.quantity }}" min="1" data-item-id="{{ item.pk }}"></td>
+        <td>
+            <div class="quantity-control">
+                <button class="quantity-minus" data-item-id="{{ item.pk }}">-</button>
+                <span class="quantity-display" data-item-id="{{ item.pk }}">{{ item.quantity }}</span>
+                <button class="quantity-plus" data-item-id="{{ item.pk }}">+</button>
+            </div>
+        </td>
         <td>${{ item.calculate_cart_item_price }}</td>
         <td><a href="{% url 'remove_item' item.pk %}" class="btn btn-secondary">Remove</a><td>  
     </tr>
@@ -35,9 +42,101 @@
         <td></td>
         <td></td>
         <td><input type="submit" value="Update" class="btn btn-primary"></td>
-        <td>${{ shopping_cart.order_total_price }}</td>
+        <td class="total-price">${{ shopping_cart.order_total_price }}</td>
         <td><a href="#" class="btn btn-primary">Checkout</a></td>
     </tr>
 </table>
 
+<!--plus and minus functionality for item quantity and dynamic prices-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Quantity minus button
+    $('.quantity-minus').click(function(e) {
+      e.preventDefault();
+      var itemId = $(this).data('item-id');
+      var quantityDisplay = $('.quantity-display[data-item-id="' + itemId + '"]');
+      var currentQuantity = parseInt(quantityDisplay.text());
+      if (currentQuantity > 1) {
+        quantityDisplay.text(currentQuantity - 1);
+        updateItemPrice(itemId);
+        updateTotalPrice();
+        updateQuantityInDatabase(itemId, currentQuantity - 1);
+      }
+    });
+  
+    // Quantity plus button
+    $('.quantity-plus').click(function(e) {
+      e.preventDefault();
+      var itemId = $(this).data('item-id');
+      var quantityDisplay = $('.quantity-display[data-item-id="' + itemId + '"]');
+      var currentQuantity = parseInt(quantityDisplay.text());
+      quantityDisplay.text(currentQuantity + 1);
+      updateItemPrice(itemId);
+      updateTotalPrice();
+      updateQuantityInDatabase(itemId, currentQuantity + 1);
+    });
+  
+    // Update item price function
+    function updateItemPrice(itemId) {
+      var quantityDisplay = $('.quantity-display[data-item-id="' + itemId + '"]');
+      var quantity = parseInt(quantityDisplay.text());
+      var itemPrice = parseFloat(quantityDisplay.closest('tr').find('td:eq(3)').text().replace('$', ''));
+      var totalPrice = quantity * itemPrice;
+      $('.quantity-display[data-item-id="' + itemId + '"]').closest('tr').find('td:eq(5)').text('$' + totalPrice.toFixed(2));
+    }
+  
+    // Update total price function
+    function updateTotalPrice() {
+      var total = 0;
+      $('.quantity-display').each(function() {
+        var quantity = parseInt($(this).text());
+        var itemPrice = parseFloat($(this).closest('tr').find('td:eq(3)').text().replace('$', ''));
+        total += quantity * itemPrice;
+      });
+      $('.total-price').text('$' + total.toFixed(2));
+    }
+    
+    // Update quantity of item in ShoppingCartItem model
+    function updateQuantityInDatabase(itemId, quantity) {
+      var csrfToken = getCookie('csrftoken');  // Get CSRF token from cookie
+
+      $.ajax({
+        url: '/shopping_cart/update_quantity/',
+        method: 'POST',
+        data: {
+          item_id: itemId,
+          quantity: quantity
+        },
+        headers: {
+          'X-CSRFToken': csrfToken
+        },
+        success: function(response) {
+          // Handle successful response, if needed
+        },
+        error: function(xhr, status, error) {
+          // Handle error response, if needed
+        }
+      });
+    }
+
+    // Function to retrieve CSRF token from cookie
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  });
+</script>
+
+    
 {% endblock %}

@@ -5,7 +5,7 @@ from .forms import AddTShirtToCartForm, AddMugToCartForm
 from django.contrib.sessions.models import Session
 import uuid
 from django.core.paginator import Paginator
-
+from django.http import JsonResponse
 
 
 class HomePageView(TemplateView):
@@ -130,18 +130,27 @@ def shopping_cart(request):
 
 def remove_item(request, pk):
     """removes item from shopping cart"""
-    cart_uuid = request.session['cart_uuid']
-    shopping_cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
     shopping_cart_item = ShoppingCartItem.objects.get(pk=pk)
     shopping_cart_item.delete()
 
     return redirect('shopping_cart')
 
 
-def update_shopping_cart(request):
-    """updates shopping cart with new total price based on the user increasing or reducing
+def update_quantity(request):
+    """updates the ShoppingCartItem model based on the user increasing or reducing
     the quantity of an item"""
-    pass
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        quantity =int(request.POST.get('quantity'))
+        
+        shopping_cart_item = ShoppingCartItem.objects.get(pk=item_id)
+        shopping_cart_item.quantity = quantity
+        shopping_cart_item.save()
+        
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error'})
+    
 
 def checkout(request):
     pass
