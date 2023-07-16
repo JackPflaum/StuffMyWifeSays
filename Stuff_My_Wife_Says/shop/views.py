@@ -153,4 +153,18 @@ def update_quantity(request):
     
 
 def checkout(request):
-    pass
+    """checkout for getting user address and payment details"""
+
+    cart_uuid = request.session.get('cart_uuid')
+    if cart_uuid is not None:
+        try:
+            shopping_cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
+
+            context ={'shopping_cart': shopping_cart}
+            return render(request, 'checkout.html', context)
+        except ShoppingCartSession.DoesNotExist:
+            # handle exception
+            pass       
+    else:
+        # handle error
+        pass
