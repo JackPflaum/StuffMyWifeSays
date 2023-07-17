@@ -12,9 +12,9 @@
         <th>IMAGE</th>
         <th>PRODUCT</th>
         <th>SIZE</th>
-        <th>PRICE</th>
+        <th>UNIT PRICE</th>
         <th>QUANTITY</th>
-        <th>TOTAL</th>
+        <th>SUBTOTAL</th>
         <th></th>
     </tr>
     {% for item in shopping_cart_items %}
@@ -22,7 +22,12 @@
         <td><a href="{% url 'product_details' item.product.pk %}">
           <img src="{{ item.product.image.url }}" alt="{{ item.product.category.category_name }}: {{ item.product.product_name}}">
         </a></td> 
-        <td><a href="{% url 'product_details' item.product.pk %}">{{ item.product.product_name }}</a></td>
+        <td>
+          <div>
+            <a href="{% url 'product_details' item.product.pk %}">{{ item.product.product_name }}</a>
+            <p style="color:gray;">Category: {{ item.product.category.category_name }}</p>
+          </div>
+        </td>
         <td>{% if item.tshirt_size %} {{ item.tshirt_size }} {% else %} - {% endif %}</td>
         <td>${{ item.product.price }}</td>
         <td>
@@ -41,11 +46,16 @@
         <td></td>
         <td></td>
         <td></td>
+        <td><b>TOTAL</b></td>
+        <td class="total-price"><b>${{ shopping_cart.order_total_price }}</b></td>
         <td></td>
-        <td class="total-price">${{ shopping_cart.order_total_price }}</td>
-        <td><a href="{% url 'checkout' %}" class="btn btn-primary">Checkout</a></td>
     </tr>
 </table>
+
+<div>
+  <a href="#" class="btn btn-secondary"><- Continue Shopping</a>
+  <a href="{% url 'checkout' %}" class="btn btn-primary">Checkout</a>
+</div>
 
 <!--plus and minus functionality for item quantity and dynamic prices-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
