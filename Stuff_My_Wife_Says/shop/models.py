@@ -4,6 +4,7 @@ import os
 from django.conf import settings
 from django.core.files import File
 import uuid
+from phonenumber_field.modelfields import PhoneNumberField
 
 class Category(models.Model):
     """Category model stores information on the categories of products that are sold"""
@@ -54,6 +55,7 @@ class Product(models.Model):
 
 
 class ShoppingCartSession(models.Model):
+    """Store users shopping cart session that is created when the user adds an item to the shopping cart"""
 
     STATUS_CHOICES = [('open', 'Open'), ('closed', 'Closed'), ('abandoned', 'Abandoned')]
 
@@ -71,6 +73,7 @@ class ShoppingCartSession(models.Model):
         return total_price
 
 class ShoppingCartItem(models.Model):
+    """stores product details such as size and quantity for each item in the shopping cart"""
 
     SHIRT_SIZE_CHOICES = [('small', 'Small'), ('medium', 'Medium'), ('large', 'Large'), ('xlarge', 'XLarge')]
 
@@ -86,4 +89,46 @@ class ShoppingCartItem(models.Model):
         return self.quantity * self.product.price
 
 
+class Order(models.Model):
+    """stores customers order details and address"""
 
+    STATUS_CHOICES = [('pending', 'Pending'), ('shipped', 'Shipped'), ('delivered', 'Delivered')]
+
+    # order information
+    order_number = models.UUIDField(default=uuid.uuid4, editable=False unique=True)
+    total_price = ''
+    status = models.CharField(choices=STATUS_CHOICES, max_length=15, default='pending')
+    date_ordered = models.DateTimeField(auto_now_add=True)
+
+    # customer information
+    email = models.EmailField()
+    phone = models.PhoneNumberField(region='AU')
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_lenght=255)
+    address = models.CharField(max_length=255)
+    suburb = models.CharField(max_length=255)
+    state = models.CharField(max_length=20)
+    post_code = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f'Order No.# {self.order_number}'
+    
+    def save(self, *args, **kwargs):
+        # create an order_number if one has not been created
+        if not self.order_number:
+            self.order_number = uuid.uuid4
+        super().save(*args, **kwargs)
+
+
+class OrderItem(models.model):
+    """"""
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
+    product = models.ForeignKey(Product, related_name='ordered_products')
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        # get and save the current product price as of ordering.
+        # use related_name to access product model and 
+        current_price = self.product.ordered_products.price
+        self.price = current_price
+        super().save(*args, **kwargs)
