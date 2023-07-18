@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
-from .models import Category, Product, ShoppingCartSession, ShoppingCartItem
+from .models import Category, Product, ShoppingCartSession, ShoppingCartItem, Order, OrderItem
 from .forms import AddTShirtToCartForm, AddMugToCartForm
 from django.contrib.sessions.models import Session
 import uuid
@@ -130,7 +130,7 @@ def shopping_cart(request):
 
 def remove_item(request, pk):
     """removes item from shopping cart"""
-    shopping_cart_item = ShoppingCartItem.objects.get(pk=pk)
+    shopping_cart_item = get_object_or_404(ShoppingCartItem, pk=pk)
     shopping_cart_item.delete()
 
     return redirect('shopping_cart')
@@ -143,7 +143,7 @@ def update_quantity(request):
         item_id = request.POST.get('item_id')
         quantity =int(request.POST.get('quantity'))
         
-        shopping_cart_item = ShoppingCartItem.objects.get(pk=item_id)
+        shopping_cart_item = get_object_or_404(ShoppingCartItem, pk=item_id)
         shopping_cart_item.quantity = quantity
         shopping_cart_item.save()
         
@@ -157,14 +157,16 @@ def checkout(request):
 
     cart_uuid = request.session.get('cart_uuid')
     if cart_uuid is not None:
-        try:
-            shopping_cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
-
-            context ={'shopping_cart': shopping_cart}
-            return render(request, 'checkout.html', context)
-        except ShoppingCartSession.DoesNotExist:
-            # handle exception
-            pass       
+        shopping_cart = get_object_or_404(ShoppingCartSession, cart_uuid=cart_uuid)
+        context ={'shopping_cart': shopping_cart}
+        return render(request, 'checkout.html', context)
     else:
         # handle error
         pass
+
+
+def purchase_confirmed(request, order_number):
+    """purchase confirmation receipt appears on screen with customer's order number"""
+    # order = get_object_or_404(Order, order_number=order_number)
+    context = {'order': order}
+    return render(request, 'purchase_confirmed.html', context)
