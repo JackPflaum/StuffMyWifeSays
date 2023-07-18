@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, ShoppingCartSession, ShoppingCartItem
+from .models import Category, Product, ShoppingCartSession, ShoppingCartItem, Order, OrderItem
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['category_name', 'slug']
@@ -28,7 +28,18 @@ class ShoppingCartItemAdmin(admin.ModelAdmin):
         return obj.cart.cart_uuid
 
 
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['order_number', 'total_price', 'status', 'date_ordered']
+
+
+class OrderItemAdmin(admin.ModelAdmin):
+    # TODO: Need to add order number and product
+    list_display = ['price', 'quantity']
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ShoppingCartSession, ShoppingCartSessionAdmin)
 admin.site.register(ShoppingCartItem, ShoppingCartItemAdmin)
+admin.site.register(Order, OrderAdmin)
+admin.site.register(OrderItem, OrderItemAdmin)
