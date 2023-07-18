@@ -30,8 +30,6 @@ class Product(models.Model):
     """Product model stores information on the products that are sold"""
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     product_name = models.CharField(max_length=255)
-
-    # include price because you want to record the price of the item at that time. the product price may change due to discount or something else.
     price = models.DecimalField(max_digits=8, decimal_places=2)
     image = models.ImageField(upload_to='product_images/', default='product_images/Image_not_available.png')
     slug = models.SlugField()
@@ -60,7 +58,7 @@ class ShoppingCartSession(models.Model):
     STATUS_CHOICES = [('open', 'Open'), ('closed', 'Closed'), ('abandoned', 'Abandoned')]
 
     # a new uuid (unique identifier) value is generated using the uuid4() function each time a new object is created
-    cart_uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    cart_uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='open')
     modified = models.DateTimeField(auto_now=True)
@@ -95,16 +93,16 @@ class Order(models.Model):
     STATUS_CHOICES = [('pending', 'Pending'), ('shipped', 'Shipped'), ('delivered', 'Delivered')]
 
     # order information
-    order_number = models.UUIDField(default=uuid.uuid4, editable=False unique=True)
-    total_price = ''
+    order_number = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    total_price = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=15, default='pending')
     date_ordered = models.DateTimeField(auto_now_add=True)
 
     # customer information
     email = models.EmailField()
-    phone = models.PhoneNumberField(region='AU')
+    phone = PhoneNumberField(region='AU')
     first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_lenght=255)
+    last_name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     suburb = models.CharField(max_length=255)
     state = models.CharField(max_length=20)
@@ -118,17 +116,35 @@ class Order(models.Model):
         if not self.order_number:
             self.order_number = uuid.uuid4
         super().save(*args, **kwargs)
+    
+    def calculate_total_price(self):
+        """calculate total price of the order from relationship with OrderItem model"""
+        self.total_price = 0
+
+        # using related_name 'order_items' from OrderItem order field.
+        for order_item in self.order_items.all():
+            self.total_price += order_item.quantity * order_item.price
+        self.save()
 
 
-class OrderItem(models.model):
-    """"""
+class OrderItem(models.Model):
+    """stores individual product details for customer's order"""
+
+    SHIRT_SIZE_CHOICES = [('small', 'Small'), ('medium', 'Medium'), ('large', 'Large'), ('xlarge', 'XLarge')]
+
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
-    product = models.ForeignKey(Product, related_name='ordered_products')
-    price = models.DecimalField(max_digits=8, decimal_places=2)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ordered_products')
+
+    # include price because you want to record the price of the item at that time.
+    # the product price may change due to discount or something else.
+    price = models.DecimalField(max_digits=8, decimal_places=2) 
+    quantity = models.PositiveIntegerField(default=1)
+    tshirt_size = models.CharField(max_length=15, choices=SHIRT_SIZE_CHOICES, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         # get and save the current product price as of ordering.
         # use related_name to access product model and 
-        current_price = self.product.ordered_products.price
+        current_price = self.product.price
         self.price = current_price
         super().save(*args, **kwargs)
