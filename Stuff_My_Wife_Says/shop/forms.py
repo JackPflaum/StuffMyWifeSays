@@ -19,3 +19,13 @@ class AddMugToCartForm(forms.Form):
                                       coerce=int,
                                       choices=QUANTITY_CHOICES,
                                       widget=forms.Select(attrs={'class': 'form-control'}))
+
+
+class PaymentForm(forms.Form):
+    """form for customer bank card details to make payment.
+    NOTE: Nothing is done with the form data as this is just a personal project.
+    If it went live than I would integrate a payment gateway such as PayPal API"""
+    card_number = forms.CharField(label='Card Number', max_length=16)
+    expiry = forms.CharField(label='Expiry Date', max_length=5)
+    cvc = forms.CharField(label='CVC', max_length=4)
+    name_on_card = forms.CharField(label='Name on card', max_length=100)
