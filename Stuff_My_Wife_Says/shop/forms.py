@@ -1,4 +1,5 @@
 from django import forms
+from .models import Order
 
 
 SHIRT_SIZE_CHOICES = [('small', 'Small'), ('medium', 'Medium'), ('large', 'Large'), ('xlarge', 'XLarge')]
@@ -29,3 +30,10 @@ class PaymentForm(forms.Form):
     expiry = forms.CharField(label='Expiry Date', max_length=5)
     cvc = forms.CharField(label='CVC', max_length=4)
     name_on_card = forms.CharField(label='Name on card', max_length=100)
+
+
+class OrderForm(forms.Form):
+    """form for collecting customer details for contact and delivery of their order"""
+    class Meta:
+        model = Order
+        fields = ['first_name', 'last_name', 'email', 'phone', 'address', 'suburb', 'state', 'post_code']
