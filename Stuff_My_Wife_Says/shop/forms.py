@@ -32,7 +32,7 @@ class PaymentForm(forms.Form):
     name_on_card = forms.CharField(label='Name on card', max_length=100)
 
 
-class OrderForm(forms.Form):
+class CustomerDetailsForm(forms.Form):
     """form for collecting customer details for contact and delivery of their order"""
     class Meta:
         model = Order
