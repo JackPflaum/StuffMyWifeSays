@@ -3,6 +3,28 @@
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
-<h3>Checkout</h3>
+
+<div class="container">
+    <h3>Checkout</h3>
+    <div class="row">
+        <div class="col-6">
+            <form method="post">
+                {% csrf_token %}
+                <div>
+                    <h4>Customer Details</h4>
+                    {{ customer_details_form.as_table }}
+                 </div>
+                 <div>
+                    <h4>Payment</h4>
+                    {{ payment_form.as_p }}
+                    <input type="submit" value='Confirm' class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+        <div class="col-6">
+            <h4>Order Summary</h4>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
