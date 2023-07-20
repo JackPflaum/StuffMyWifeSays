@@ -4,6 +4,9 @@
 
 <div class="container">
     <h4>Purchase Confirmed</h4>
+    <p>Order Number: {{ order.order_number }}</p>
+    <p>Order Date: {{ order.date_ordered}}</p>
+    <p>You Paid: {{ order.total_price }}</p>
 </div>
 
 {% endblock %}
