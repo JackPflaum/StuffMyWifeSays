@@ -114,7 +114,7 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         # create an order_number if one has not been created
         if not self.order_number:
-            self.order_number = uuid.uuid4
+            self.order_number = uuid.uuid4()
         super().save(*args, **kwargs)
     
     def calculate_total_price(self):
