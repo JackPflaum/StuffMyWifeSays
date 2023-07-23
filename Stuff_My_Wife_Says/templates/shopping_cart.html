@@ -54,7 +54,7 @@
 
 <div>
   <a href="#" class="btn btn-secondary"><- Continue Shopping</a>
-  <a href="{% url 'checkout' %}" class="btn btn-primary">Checkout</a>
+  <a href="{% url 'checkout' shopping_cart.cart_uuid %}" class="btn btn-primary">Checkout</a>
 </div>
 
 <!--plus and minus functionality for item quantity and dynamic prices-->
