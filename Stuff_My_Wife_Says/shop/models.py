@@ -111,12 +111,6 @@ class Order(models.Model):
     def __str__(self):
         return f'Order No.# {self.order_number}'
     
-    def save(self, *args, **kwargs):
-        # create an order_number if one has not been created
-        if not self.order_number:
-            self.order_number = uuid.uuid4()
-        super().save(*args, **kwargs)
-    
     def calculate_total_price(self):
         """calculate total price of the order from relationship with OrderItem model"""
         self.total_price = 0
