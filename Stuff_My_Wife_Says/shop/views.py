@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
 from .models import Category, Product, ShoppingCartSession, ShoppingCartItem, Order, OrderItem
-from .forms import AddTShirtToCartForm, AddMugToCartForm
+from .forms import AddTShirtToCartForm, AddMugToCartForm, PaymentForm, CustomerDetailsForm
 from django.contrib.sessions.models import Session
 import uuid
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.contrib import messages
 
 
 class HomePageView(TemplateView):
@@ -152,21 +153,65 @@ def update_quantity(request):
         return JsonResponse({'status': 'error'})
     
 
-def checkout(request):
+def checkout(request, cart_uuid):
     """checkout for getting user address and payment details"""
+    # forms for customer payment and contact information
+    payment_form = PaymentForm(request.POST or None)
+    customer_details_form = CustomerDetailsForm(request.POST or None)
 
-    cart_uuid = request.session.get('cart_uuid')
-    if cart_uuid is not None:
-        shopping_cart = get_object_or_404(ShoppingCartSession, cart_uuid=cart_uuid)
-        context ={'shopping_cart': shopping_cart}
-        return render(request, 'checkout.html', context)
+    context = {'payment_form': payment_form, 'customer_details_form': customer_details_form}
+
+    if request.method == 'POST':
+
+        # process form data if valid
+        if payment_form.is_valid() and customer_details_form.is_valid():
+            # create Order object
+            order = Order()
+            # add form data to order fields
+            # customer information
+            order.first_name = customer_details_form.cleaned_data['first_name']
+            order.last_name = customer_details_form.cleaned_data['last_name']
+            order.email = customer_details_form.cleaned_data['email']
+            order.phone = customer_details_form.cleaned_data['phone']
+            order.address = customer_details_form.cleaned_data['address']
+            order.suburb = customer_details_form.cleaned_data['suburb']
+            order.state = customer_details_form.cleaned_data['state']
+            order.post_code = customer_details_form.cleaned_data['post_code']
+
+            # create uuid number for order_number field
+            order_number = uuid.uuid4()
+            order.order_number = order_number
+            order.save()
+
+            # get customers shopping cart and transfer item information to OrderItem model.
+            shopping_cart = get_object_or_404(ShoppingCartSession, cart_uuid=cart_uuid)
+            shopping_cart_items = ShoppingCartItem.objects.filter(cart=shopping_cart)
+            # create OrderItem objects for each item in the order
+            for item in shopping_cart_items:
+                order_item = OrderItem()
+                order_item.order = order
+                order_item.product = item.product
+                order_item.quantity = item.quantity
+                order_item.tshirt_size = item.tshirt_size or ''
+                order_item.save()
+                
+            # get the total price of the order from product quantity and price
+            order.total_price = order.calculate_total_price()
+            order.save()
+                
+            # NOTE: do nothing with payment details since this is just a mock payment system.
+
+            return redirect('purchase_confirmed', order_number=order_number)
+        else:
+            # if the forms are not valid, re-render the checkout page with the forms and error messages
+            messages.error(request, 'Error: Please correct the form errors.')
+            return render(request, 'checkout.html', context)
     else:
-        # handle error
-        pass
+        return render(request, 'checkout.html', context)
 
 
 def purchase_confirmed(request, order_number):
     """purchase confirmation receipt appears on screen with customer's order number"""
-    # order = get_object_or_404(Order, order_number=order_number)
+    order = get_object_or_404(Order, order_number=order_number)
     context = {'order': order}
     return render(request, 'purchase_confirmed.html', context)
