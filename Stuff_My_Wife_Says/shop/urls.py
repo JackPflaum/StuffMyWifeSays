@@ -6,14 +6,14 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
-    path('categories', CategoryView.as_view(), name='categories'),
-    path('products/<int:pk>', views.products, name='products'),
-    path('product_details/<int:pk>', views.product_details, name='product_details'),
+    path('categories/', CategoryView.as_view(), name='categories'),
+    path('products/<int:pk>/', views.products, name='products'),
+    path('product_details/<int:pk>/', views.product_details, name='product_details'),
     path('shopping_cart/', views.shopping_cart, name='shopping_cart'),
-    path('remove_item/<int:pk>', views.remove_item, name='remove_item'),
+    path('remove_item/<int:pk>/', views.remove_item, name='remove_item'),
     path('shopping_cart/update_quantity/', views.update_quantity, name='update_quantity'),
-    path('checkout/', views.checkout, name='checkout'),
-    # path('purchase_confirmed/<int:pk>', views.purchase_confirmed, name='purchase_confirmed'),
+    path('checkout/<uuid:cart_uuid>/', views.checkout, name='checkout'),
+    path('purchase_confirmed/<uuid:order_number>/', views.purchase_confirmed, name='purchase_confirmed'),
     path('about/', AboutView.as_view(), name='about'),
     path('contact/', views.contact, name='contact'),
 ]
