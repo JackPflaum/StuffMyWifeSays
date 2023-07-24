@@ -212,6 +212,11 @@ def checkout(request, cart_uuid):
 
 def purchase_confirmed(request, order_number):
     """purchase confirmation receipt appears on screen with customer's order number"""
+    
+    # Order has been confirmed, and therfore can delete customer cart session
+    if 'cart_uuid' in request.session:
+        del request.session['cart_uuid']
+    
     order = get_object_or_404(Order, order_number=order_number)
     context = {'order': order}
     return render(request, 'purchase_confirmed.html', context)
