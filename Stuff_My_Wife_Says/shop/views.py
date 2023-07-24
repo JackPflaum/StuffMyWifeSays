@@ -201,6 +201,10 @@ def checkout(request, cart_uuid):
                 
             # NOTE: do nothing with payment details since this is just a mock payment system.
 
+            # update ShoppingCartSession status from 'open' to 'closed'
+            shopping_cart.status = 'closed'
+            shopping_cart.save()
+
             return redirect('purchase_confirmed', order_number=order_number)
         else:
             # if the forms are not valid, re-render the checkout page with the forms and error messages
@@ -212,7 +216,7 @@ def checkout(request, cart_uuid):
 
 def purchase_confirmed(request, order_number):
     """purchase confirmation receipt appears on screen with customer's order number"""
-    
+
     # Order has been confirmed, and therfore can delete customer cart session
     if 'cart_uuid' in request.session:
         del request.session['cart_uuid']
