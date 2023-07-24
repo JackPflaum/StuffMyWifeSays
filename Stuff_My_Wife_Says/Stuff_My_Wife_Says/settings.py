@@ -147,3 +147,8 @@ MEDIA_URL = '/media/' # The URL prefix for serving media files. A portion of the
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# set user session timeout to 30 days.
+# therefore, shopping cart will expire if not modified after 30 days.
+# 60secs x 60secs x 24hrs x 30days
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30 
