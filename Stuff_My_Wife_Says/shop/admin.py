@@ -34,7 +34,11 @@ class OrderAdmin(admin.ModelAdmin):
 
 class OrderItemAdmin(admin.ModelAdmin):
     # TODO: Need to add order number and product
-    list_display = ['price', 'quantity']
+    list_display = ['order_number', 'price', 'quantity']
+
+    def order_number(self, obj):
+        """retrieve order_number connected to order item"""
+        return obj.order.order_number
 
 
 admin.site.register(Category, CategoryAdmin)
