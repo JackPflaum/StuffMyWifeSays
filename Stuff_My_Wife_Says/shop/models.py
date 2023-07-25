@@ -118,7 +118,7 @@ class Order(models.Model):
         # using related_name 'order_items' from OrderItem order field.
         for order_item in self.order_items.all():
             self.total_price += order_item.quantity * order_item.price
-        self.save()
+        return self.total_price
 
 
 class OrderItem(models.Model):
