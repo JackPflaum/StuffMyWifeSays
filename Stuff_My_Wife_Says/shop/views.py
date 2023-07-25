@@ -51,6 +51,8 @@ def product_details(request, pk):
     else:
         form = AddMugToCartForm(request.POST or None)
 
+    context = {'form': form, 'product': product}
+
     # handle form submission data
     if request.method == 'POST' and form.is_valid():
             cart_uuid = request.session.get('cart_uuid')
@@ -72,7 +74,8 @@ def product_details(request, pk):
                     return redirect('products', pk=product.category.pk)
                     
                 except ShoppingCartSession.DoesNotExist:
-                    pass
+                    messages.error('Woops! Soemthing went wrong while adding the item to your cart. Please try again.')
+                    return render(request, 'product_details.html', context)
             else:
                 # if the user doesn't have a cart session than
                 # create uuid and store it under 'cart_uuid' in 'request.session' dictionary.
@@ -97,7 +100,6 @@ def product_details(request, pk):
                 # return back to products page
                 return redirect('products', pk=product.category.pk)
     else:        
-        context = {'form': form, 'product': product}
         return render(request, 'product_details.html', context)
         
 
@@ -195,11 +197,12 @@ def checkout(request, cart_uuid):
                 order_item.tshirt_size = item.tshirt_size or ''
                 order_item.save()
                 
-            # get the total price of the order from product quantity and price
+            # get the total price of the order from order items quantity and price
             order.total_price = order.calculate_total_price()
             order.save()
                 
             # NOTE: do nothing with payment details since this is just a mock payment system.
+            # If it went live than I would integrate a payment gateway such as PayPal API.
 
             # update ShoppingCartSession status from 'open' to 'closed'
             shopping_cart.status = 'closed'
