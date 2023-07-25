@@ -29,7 +29,11 @@
                 {{ form.quantity }}
                 {% endif %}
 
+                {% if product_in_cart %}
+                <a href="#" class="btn btn-secondary">Added to Cart</a>
+                {% else %}
                 <input type="submit" value="Add to Cart" class="btn btn-primary">
+                {% endif %}
                 <a href="{% url 'products' product.category.id %}" class="btn btn-secondary">Back to Products</a>
             </form>
         </div>

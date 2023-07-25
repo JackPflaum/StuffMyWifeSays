@@ -53,6 +53,9 @@ def product_details(request, pk):
 
     context = {'form': form, 'product': product}
 
+    # check if the product is in the cart already.
+    context['product_in_cart'] = is_product_in_cart(request, product)
+
     # handle form submission data
     if request.method == 'POST' and form.is_valid():
             cart_uuid = request.session.get('cart_uuid')
@@ -101,6 +104,27 @@ def product_details(request, pk):
                 return redirect('products', pk=product.category.pk)
     else:        
         return render(request, 'product_details.html', context)
+
+def is_product_in_cart(request, product):
+    """checking whether the customers cart already has the product in it."""
+    # cart_uuid is 'None' if no session exists.
+    cart_uuid = request.session.get('cart_uuid')
+
+    # if cart does not exist then item is not in the shopping cart yet.
+    if cart_uuid:
+        try:
+            # get shopping cart and use relationship with ShoppingCartItem
+            # to see if product is in cart.
+            cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
+            cart_item = cart.cart_items.filter(product=product).first()
+
+            # if item in cart then return true.
+            if cart_item:
+                return True
+        except ShoppingCartSession.DoesNotExist:
+            pass
+    else:
+        return False
         
 
 class AboutView(TemplateView):
@@ -211,7 +235,7 @@ def checkout(request, cart_uuid):
             return redirect('purchase_confirmed', order_number=order_number)
         else:
             # if the forms are not valid, re-render the checkout page with the forms and error messages
-            messages.error(request, 'Error: Please correct the form errors.')
+            messages.error(request, 'Woops! Something went wrong when filling out the form. Please try again.')
             return render(request, 'checkout.html', context)
     else:
         return render(request, 'checkout.html', context)
