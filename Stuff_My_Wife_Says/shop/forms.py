@@ -37,3 +37,12 @@ class CustomerDetailsForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['first_name', 'last_name', 'email', 'phone', 'address', 'suburb', 'state', 'post_code']
+
+
+class ContactForm(forms.Form):
+    """form for customers to send questions and feedback"""
+    name = forms.CharField(label='Name', max_length=255)
+    email = forms.EmailField(label='Email', max_length=255)
+    subject = forms.CharField(label='Subject', max_length=255)
+    order_number = forms.CharField(label='Order Number', max_length=36, required=False)
+    message = forms.CharField(label='Message', widget=forms.Textarea)
