@@ -143,14 +143,15 @@ def shopping_cart(request):
     # render shopping_html html otherwise render no_cart html if no object exists.
     cart_uuid = request.session.get('cart_uuid')
     if cart_uuid is not None:
-        try:
-            shopping_cart = ShoppingCartSession.objects.get(cart_uuid=cart_uuid)
-            shopping_cart_items = ShoppingCartItem.objects.filter(cart=shopping_cart)
+        shopping_cart = get_object_or_404(ShoppingCartSession, cart_uuid=cart_uuid)
+        shopping_cart_items = ShoppingCartItem.objects.filter(cart=shopping_cart)
 
-            return render(request, 'shopping_cart.html', {'shopping_cart_items': shopping_cart_items,
-                                                          'shopping_cart': shopping_cart})
-        except ShoppingCartSession.DoesNotExist:
+        # if no items in the shopping_cart then render 'no_shopping_cart.html'
+        if not shopping_cart_items:
             return render(request, 'no_shopping_cart.html', {})
+
+        return render(request, 'shopping_cart.html', {'shopping_cart_items': shopping_cart_items,
+                                                          'shopping_cart': shopping_cart})
     else:
         return render(request, 'no_shopping_cart.html', {})
 
