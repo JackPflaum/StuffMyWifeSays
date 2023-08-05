@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
 from .models import Category, Product, ShoppingCartSession, ShoppingCartItem, Order, OrderItem
-from .forms import AddTShirtToCartForm, AddMugToCartForm, PaymentForm, CustomerDetailsForm
+from .forms import AddTShirtToCartForm, AddMugToCartForm, PaymentForm, CustomerDetailsForm, ContactForm
 from django.contrib.sessions.models import Session
 import uuid
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 class HomePageView(TemplateView):
@@ -133,7 +135,39 @@ class AboutView(TemplateView):
 
 
 def contact(request):
-    return render(request, 'contact.html', {})
+    """contact form for customers to send questions and feedback."""
+    contact_form = ContactForm(request.POST or None)
+
+    if request.method == 'POST':
+        if contact_form.is_valid():
+            # get the cleaned form data
+            name = contact_form.cleaned_data['name']
+            email = contact_form.cleaned_data['email']
+            subject = contact_form.cleaned_data['subject']
+            order_number = contact_form.cleaned_data.get('order_number', '') # if no order_number return empty string
+            message = contact_form.cleaned_data['message']
+
+            # process the form data and send email
+            send_contact_email(name, email, subject, order_number, message)
+
+            messages.success(request, 'Thank you for contacting us. We will get back to you as soon as possible')
+            return redirect('home')
+    else:
+        return render(request, 'contact.html', {'contact_form': contact_form})
+
+def send_contact_email(name, email, subject, order_number, message):
+    """send customers details and message to designated email recipient"""
+    email_subject = f'{subject}'
+    email_body = f'''Name: {name}
+    Email: {email}
+    Order Number: {order_number}
+    Message: {message}'''
+
+    # send customer message to the company's dedicated contact email.
+    send_mail(subject=email_subject,
+              message=email_body,
+              from_email=settings.DEFAULT_FROM_EMAIL,
+              recipient_list=[settings.CONTACT_EMAIL],)
 
 
 def shopping_cart(request):

@@ -151,4 +151,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # set user session timeout to 30 days.
 # therefore, shopping cart will expire if not modified after 30 days.
 # 60secs x 60secs x 24hrs x 30days
-SESSION_COOKIE_AGE = 60 * 60 * 24 * 30 
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+
+# email backend for sending contact form data during development
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'stuffmywifesays@email.com'    # dedicated email for sending the customers message.
+CONTACT_EMAIL = 'terminal@email.com'    # placeholder. Real email would go here for receiving customer emails.
