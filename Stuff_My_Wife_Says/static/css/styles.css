@@ -1,16 +1,51 @@
 /*--------------------------------------Generic Styles-----------------------------------------*/
 body {
-    background-color: white;
+    background-color: #FBFAFF;
 }
 
+
+/*--------------------------------------Navigation Bar-----------------------------------------*/
+
+.custom-navbar {
+    background-color: black;
+}
+
+/* Change the text color of the brand link (e.g., "Stuff My Wife Says") to white */
+.custom-navbar .navbar-link,
+.custom-navbar .navbar-brand {
+    color: white;
+}
 
 
 /*--------------------------------------Home Page-----------------------------------------*/
-body img {
-    width: 300px;
-    height: auto;
+.home_heading {
+    text-align: center;
+    margin-top: 100px;
 }
 
+.image-links {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.image-links a {
+    margin: 0 50px;
+    display: inline-block;
+    position: relative;
+}
+
+.image-links img {
+    width: 300px;
+    height: 300px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: 0.5s ease;
+}
+
+.image-links a:hover img {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Changing the box-shadow on hover */
+    transform: translateY(-5px); /* Adding a slight vertical translation on hover */
+}
 
 
 

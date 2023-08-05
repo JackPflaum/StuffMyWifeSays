@@ -4,13 +4,17 @@
 
 {% block content %}
 <div class="container">
-    <div class="row align-items-center justify-content-center">
-        <h3>Stuff My Wife Says</h3>
+    <header class="home_heading">
+        <h1>Stuff My Wife Says</h1>
+    </header>
+    <div class="image-links">
+        <a href="{% url 'products' 1 %}">
+            <img src="{% static 'images/black_tshirt.png' %}" alt="T-Shirt">
+        </a>
+        <a href="{% url 'products' 2 %}">
+            <img src="{% static 'images/black_mug.png' %}" alt="Mug">
+        </a>
     </div>
-    <div class="row">
-        <div class="col-6 text-center"><img src="{% static 'images/black_tshirt.png' %}" alt="black t-shirt"></div>
-        <div class="col-6 text-center"><img src="{% static 'images/black_mug.png' %}" alt="black mug"></div>
-     </div>
 </div>
 
 {% endblock %}
