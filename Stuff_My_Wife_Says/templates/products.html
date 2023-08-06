@@ -2,8 +2,6 @@
 
 {% load static %}
 
-{% block title %}{{ products.category }}{% endblock %}
-
 {% block content%}
 <div class="container">
     <header>
@@ -15,11 +13,12 @@
             <h4>Categories</h4>
             {% if categories %}
                 {% for category in categories %}
-                    <a href="#">{{ category.category_name }}</a>
+                    <a href="{% url 'products' category.pk %}">{{ category.category_name }}</a>
                 {% endfor %}
             {% endif %}
         </div>
         <div class="col-lg-10 col-md-8 col-sm-12">
+            <h1>{{ category_name }}</h1>
             <div class="row">
                 {% for product in products %}
                 <div class="col-lg-3 col-md-4 col-sm-12">

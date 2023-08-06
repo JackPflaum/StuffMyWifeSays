@@ -37,7 +37,7 @@ def products(request, pk):
     page_obj_products = paginator.get_page(page_number)
 
     # pass page object into context dictionary
-    context = {'products': page_obj_products}
+    context = {'products': page_obj_products, 'category_name': category.category_name}
 
     return render(request, 'products.html', context)
 
