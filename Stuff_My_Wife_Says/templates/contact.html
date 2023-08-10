@@ -1,16 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <div class="container">
     <header>
         <h1>Contact Us</h1>
     </header>
-    <form method="post">
-        {% csrf_token %}
-        {{ contact_form.as_p }}
-        <input type="submit" value="Send Message" class="btn btn-primary">
-    </form>
+    <div class='row'>
+        <div class='col-6'>
+            <p>If you have any questions or want to give feedback please contact us using the form or contact details below</p>
+            <p><i class="fas fa-envelope"></i> shitmywifesays@email.com.au</p>
+            <p><i class="fas fa-phone"></i> 1800 111 999</p>
+            <p><i class="fab fa-facebook"></i> www.facebook.com/sh#tmywifesays</p>
+            <p><i class="fab fa-instagram"></i> www.instagram.com/sh#tmywifesays</p>
+        </div>
+        <div class='col-6'>
+            <form method="post">
+                {% csrf_token %}
+                {{ contact_form.as_p }}
+                <input type="submit" value="Send Message" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
 </div>
-
 {% endblock %}
