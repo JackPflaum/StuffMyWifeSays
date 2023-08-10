@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <div class="container">
-    <h4>Purchase Confirmed</h4>
-    <p>Order Number: {{ order.order_number }}</p>
-    <p>Order Date: {{ order.date_ordered}}</p>
-    <p>You Paid: {{ order.total_price }}</p>
+	<div class="purchased-container">
+		<div class="purchased-content">
+			<h3>Purchase Confirmed</h3>
+			<p>Your order should arrive in 3-5 business days</p>
+			<p>Order Number: {{ order.order_number }}</p>
+			<p>Order Date: {{ order.date_ordered}}</p>
+			<p>You Paid: ${{ order.total_price }}</p>
+		</div>
+	</div>
 </div>
-
 {% endblock %}

@@ -1,7 +1,14 @@
 /*--------------------------------------Generic Styles-----------------------------------------*/
 body {
-    background-color: white;
-    color: #606C5D;
+    background-color: black;   /* fallback colour */
+    background-image: url('black_background.jpg');  /* located in css folder */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+h1, h2, h3, p {
+    color: white;
 }
 
 .custom-btn {
@@ -21,13 +28,38 @@ body {
 /*--------------------------------------Navigation Bar-----------------------------------------*/
 
 .custom-navbar {
-    background-color: #606C5D;
+    /* background-color: black; */
+    position: relative;
+}
+
+/* white line under navbar */
+.custom-navbar::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    /* background-color: white; White line color */
 }
 
 /* Change the text color of the brand link (e.g., "Stuff My Wife Says") to white */
 .custom-navbar .navbar-nav .nav-item .nav-link,
 .custom-navbar .navbar-brand {
-    color: #FFF4F4;
+    color: white;
+}
+
+.cart-btn {
+    background-color: white;
+    color: red !important;
+    border: 2px solid black;
+    border-radius: 5px;
+    transition: 0.5s ease;
+}
+
+.cart-btn:hover {
+    background-color: black;
+    color: red;
 }
 
 
@@ -72,7 +104,7 @@ body {
 
 .image-links img {
     width: 300px;
-    height: 300px;
+    height: 340px;
     border: 2px solid black;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -177,4 +209,19 @@ a:link {
 
 
 /*--------------------------------------Product Details-----------------------------------------*/
+
+
+
+
+/*--------------------------------------Purchased Confirmed-----------------------------------------*/
+.purchased-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+.purchased-content {
+    text-align: center;
+}
 
