@@ -1,16 +1,29 @@
 /*--------------------------------------Generic Styles-----------------------------------------*/
 body {
     background-color: black;   /* fallback colour */
-    background-image: url('black_background.jpg');  /* located in css folder */
+    /* background-image: url('pastelle_background.jpg');  located in css folder */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    font-family: 'League Gothic', sans-serif;
 }
 
-h1, h2, h3, p {
+h1, h2, h3{
     color: white;
+    font-size: 45px;
 }
 
+p {
+    color: white;
+    font-size: 25px;
+}
+
+/*make selected text uppercase*/
+.uppercase {
+    text-transform: uppercase;
+}
+
+/*website button styling*/
 .custom-btn {
     background-color: white;
     color: #F1C376;
@@ -19,6 +32,7 @@ h1, h2, h3, p {
     transition: 0.5s ease;
 }
 
+/*button styling when mouse hovers over*/
 .custom-btn:hover {
     background-color: #F1C376;
     color: white;
@@ -43,12 +57,23 @@ h1, h2, h3, p {
     /* background-color: white; White line color */
 }
 
-/* Change the text color of the brand link (e.g., "Stuff My Wife Says") to white */
+/* Change the text color of the navbrand link and navlinks*/
 .custom-navbar .navbar-nav .nav-item .nav-link,
 .custom-navbar .navbar-brand {
     color: white;
 }
 
+/*navigation brand font size*/
+.navbar-brand {
+    font-size: 40px;
+}
+
+/*navigation links font size*/
+.nav-link {
+    font-size: 30px;
+}
+
+/*shopping cart link*/
 .cart-btn {
     background-color: white;
     color: red !important;
@@ -64,6 +89,8 @@ h1, h2, h3, p {
 
 
 /*--------------------------------------Home Page-----------------------------------------*/
+
+/*line either side of heading*/
 .home-heading h1:before,
 .home-heading h1:after {
     background-color: #333;
@@ -85,9 +112,15 @@ h1, h2, h3, p {
     margin-right: -50%;
 }
 
+/* align header center and away from the top*/
 .home-heading {
     text-align: center;
     margin-top: 100px;
+}
+
+.home-heading h1 {
+    font-size: 70px;
+    text-transform: uppercase;
 }
 
 .image-links {
@@ -119,11 +152,18 @@ h1, h2, h3, p {
 
 
 /*--------------------------------------Products Page-----------------------------------------*/
+
+/*category column setup*/
 .categories-column {
     display: flex;
     flex-direction: column;
     justify-content: start;
     margin-bottom: 10px;
+}
+
+/*font size of category links*/
+.category-font-size {
+    font-size: 25px;
 }
 
 
@@ -209,7 +249,11 @@ a:link {
 
 
 /*--------------------------------------Product Details-----------------------------------------*/
-
+.custom-card {
+    background-color: black;
+    color: white;
+    border: 2px solid purple;
+}
 
 
 
