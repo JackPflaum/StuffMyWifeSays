@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.files import File
 import uuid
 from phonenumber_field.modelfields import PhoneNumberField
+import re
 
 class Category(models.Model):
     """Category model stores information on the categories of products that are sold"""
@@ -40,9 +41,9 @@ class Product(models.Model):
         # auto-populate slug field
         if not self.slug:
             # slugify product name
-            base_slug = slugify(self.product_name)
+            base_slug = custom_slugify(self.product_name)
 
-            category = slugify(self.category.category_name)
+            category = custom_slugify(self.category.category_name)
 
             # add category name to slug field
             unique_slug = f'{base_slug}-{category}'
@@ -65,6 +66,11 @@ class Product(models.Model):
     
     def __str__(self):
         return self.product_name
+
+def custom_slugify(name):
+    """remove invalid characters from name before slugify"""
+    cleaned_name = re.sub(r'[\'!#]', '', name)   # replaces occurences of ', '!', and '#' with empty string
+    return slugify(cleaned_name)
 
 
 class ShoppingCartSession(models.Model):
