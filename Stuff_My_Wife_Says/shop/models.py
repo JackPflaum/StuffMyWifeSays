@@ -32,13 +32,28 @@ class Product(models.Model):
     product_name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     image = models.ImageField(upload_to='product_images/', default='product_images/Image_not_available.png')
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
-        """auto-populate slug field"""
+        """auto-populate slug field and image field if no image"""
+
         # auto-populate slug field
         if not self.slug:
-            self.slug = slugify(self.product_name)
+            # slugify product name
+            base_slug = slugify(self.product_name)
+
+            category = slugify(self.category.category_name)
+
+            # add category name to slug field
+            unique_slug = f'{base_slug}-{category}'
+            num = 1
+
+            # if slug already exists then add number incremental number to the end
+            while Product.objects.filter(slug=unique_slug).exists():
+                unique_slug = f'{unique_slug}-{num}'
+                num += 1
+            
+            self.slug = unique_slug
 
         # sets the image to the default image when no image is selected during model creation.
         # avoids multiple copies of the default image.
