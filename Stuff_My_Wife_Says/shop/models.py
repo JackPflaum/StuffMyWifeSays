@@ -49,9 +49,9 @@ class Product(models.Model):
             unique_slug = f'{base_slug}-{category}'
             num = 1
 
-            # if slug already exists then add number incremental number to the end
+            # if slug already exists then add incremental number to the end
             while Product.objects.filter(slug=unique_slug).exists():
-                unique_slug = f'{unique_slug}-{num}'
+                unique_slug = f'{base_slug}-{category}-{num}'
                 num += 1
             
             self.slug = unique_slug
