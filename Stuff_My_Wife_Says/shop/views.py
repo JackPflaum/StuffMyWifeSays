@@ -26,7 +26,7 @@ def products(request, pk):
     products = Product.objects.filter(category=category).order_by('price')
 
     # create Paginator object and pass query_set and number of items per page
-    paginator = Paginator(products, 2)
+    paginator = Paginator(products, 8)
 
     # get the current page number from the request's query paramaters
     page_number = request.GET.get('page')
