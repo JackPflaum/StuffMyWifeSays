@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
@@ -12,12 +14,12 @@
                 {% csrf_token %}
                 <div>
                     <h4>Customer Details</h4>
-                    {{ customer_details_form.as_table }}
+                    {{ customer_details_form|crispy }}
                  </div>
                  <div>
                     <h4>Payment</h4>
-                    {{ payment_form.as_p }}
-                    <input type="submit" value='Confirm' class="btn btn-primary">
+                    {{ payment_form|crispy }}
+                    <input type="submit" value='Place Order' class="btn btn-primary">
                 </div>
             </form>
         </div>

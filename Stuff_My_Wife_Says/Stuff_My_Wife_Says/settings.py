@@ -43,7 +43,10 @@ INSTALLED_APPS = [
 
     'shop',
     'crispy_forms',
+    'crispy_bootstrap4',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
 
 # allows you to specify the template pack for rendering crispy forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

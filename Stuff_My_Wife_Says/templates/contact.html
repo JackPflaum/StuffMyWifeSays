@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 <div class="container">
     <header>
@@ -16,7 +18,7 @@
         <div class='col-6'>
             <form method="post">
                 {% csrf_token %}
-                {{ contact_form.as_p }}
+                {{ contact_form|crispy }}
                 <input type="submit" value="Send Message" class="btn btn-primary">
             </form>
         </div>
