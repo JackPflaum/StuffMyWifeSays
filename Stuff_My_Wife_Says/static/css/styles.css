@@ -8,12 +8,18 @@ body {
     font-family: 'League Gothic', sans-serif;
 }
 
-h1, h2, h3{
+h1, h2, h3, h4, h5, h6 {
     color: white;
     font-size: 45px;
 }
 
 p {
+    color: white;
+    font-size: 25px;
+}
+
+/*form label text color and font size*/
+label {
     color: white;
     font-size: 25px;
 }
@@ -166,6 +172,14 @@ p {
     font-size: 25px;
 }
 
+/*card styling*/
+.custom-card {
+    background-color: black;
+    color: white;
+    border: 2px solid red;
+}
+
+
 
 /*--------------------------------------Products Pagination-----------------------------------------*/
 
@@ -249,12 +263,24 @@ a:link {
 
 
 /*--------------------------------------Product Details-----------------------------------------*/
-.custom-card {
-    background-color: black;
-    color: white;
-    border: 2px solid purple;
+.details-container {
+    margin-top: 100px;
 }
 
+.product_details_img {
+    width:auto;
+    height: 400px;
+}
+
+/*--------------------------------------Shopping Cart Page-----------------------------------------*/
+.cart-img {
+    width:auto;
+    height: 200px;
+}
+
+.table {
+    color: white;
+}
 
 
 /*--------------------------------------Purchased Confirmed-----------------------------------------*/

@@ -20,12 +20,12 @@
     {% for item in shopping_cart_items %}
     <tr>
         <td><a href="{% url 'product_details' item.product.pk %}">
-          <img src="{{ item.product.image.url }}" alt="{{ item.product.category.category_name }}: {{ item.product.product_name}}">
+          <img class="cart-img" src="{{ item.product.image.url }}"alt="{{ item.product.category.category_name }}: {{ item.product.product_name}}">
         </a></td> 
         <td>
           <div>
             <a href="{% url 'product_details' item.product.pk %}">{{ item.product.product_name }}</a>
-            <p style="color:gray;">Category: {{ item.product.category.category_name }}</p>
+            <p>Category: {{ item.product.category.category_name }}</p>
           </div>
         </td>
         <td>{% if item.tshirt_size %} {{ item.tshirt_size }} {% else %} - {% endif %}</td>
@@ -53,7 +53,7 @@
 </table>
 
 <div>
-  <a href="#" class="btn btn-secondary"><- Continue Shopping</a>
+  <a href="{% url 'home' %}" class="btn btn-secondary"><- Continue Shopping</a>
   <a href="{% url 'checkout' shopping_cart.cart_uuid %}" class="btn btn-primary">Checkout</a>
 </div>
 
