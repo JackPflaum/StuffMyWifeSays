@@ -37,6 +37,10 @@ a:hover {
     color:white;
 }
 
+i {
+    color: red;
+}
+
 /*form label text color and font size*/
 label {
     color: white;
@@ -50,8 +54,8 @@ label {
 
 /*website button styling*/
 .custom-btn {
-    background-color: white;
-    color: red;
+    background-color: red;
+    color: white;
     border: 2px solid red;
     border-radius: 5px;
     transition: 0.5s ease;
@@ -60,8 +64,8 @@ label {
 
 /*button styling when mouse hovers over*/
 .custom-btn:hover {
-    background-color: red;
-    color: white;
+    background-color: white;
+    color: red;
 }
 
 
