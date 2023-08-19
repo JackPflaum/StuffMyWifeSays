@@ -113,6 +113,10 @@ label {
     font-size: 20px;
 }
 
+.dropdown-item:hover {
+    color: red;
+ }
+
 /*shopping cart nav link color*/
 .cart-nav-link,
 .cart-nav-link i {
