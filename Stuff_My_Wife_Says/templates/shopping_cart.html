@@ -24,7 +24,7 @@
         </a></td> 
         <td>
           <div>
-            <a href="{% url 'product_details' item.product.pk %}">{{ item.product.product_name }}</a>
+            <a class="cart-link" href="{% url 'product_details' item.product.pk %}">{{ item.product.product_name }}</a>
             <p>Category: {{ item.product.category.category_name }}</p>
           </div>
         </td>

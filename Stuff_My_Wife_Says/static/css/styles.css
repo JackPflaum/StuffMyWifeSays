@@ -302,6 +302,7 @@ a:link {
 }
 
 /*--------------------------------------Shopping Cart Page-----------------------------------------*/
+/*cart item image*/
 .cart-img {
     width:auto;
     height: 200px;
@@ -309,6 +310,20 @@ a:link {
 
 .table {
     color: white;
+}
+
+/*table header font-size*/
+th {
+    font-size: 25px;
+}
+
+/*table data font-size*/
+td {
+    font-size: 25px;
+}
+
+.cart-link {
+    font-size: 30px;
 }
 
 
