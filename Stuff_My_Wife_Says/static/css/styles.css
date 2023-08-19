@@ -113,18 +113,15 @@ label {
     font-size: 20px;
 }
 
-/*shopping cart link*/
-.cart-btn {
-    background-color: white;
+/*shopping cart nav link color*/
+.cart-nav-link,
+.cart-nav-link i {
     color: red !important;
-    border: 2px solid black;
-    border-radius: 5px;
-    transition: 0.5s ease;
 }
 
-.cart-btn:hover {
-    background-color: black;
-    color: red;
+.cart-nav-link:hover,
+.cart-nav-link:hover i {
+    color: white !important;
 }
 
 
