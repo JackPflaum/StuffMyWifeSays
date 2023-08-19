@@ -10,12 +10,31 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     color: white;
+}
+
+h1 {
+    font-size: 60px;
+}
+
+h3 {
     font-size: 45px;
+}
+
+h4 {
+    font-size: 35px;
 }
 
 p {
     color: white;
     font-size: 25px;
+}
+
+a {
+    color: red;
+}
+
+a:hover {
+    color:white;
 }
 
 /*form label text color and font size*/
@@ -32,15 +51,16 @@ label {
 /*website button styling*/
 .custom-btn {
     background-color: white;
-    color: #F1C376;
-    border: 2px solid #F1C376;
+    color: red;
+    border: 2px solid red;
     border-radius: 5px;
     transition: 0.5s ease;
+    font-size: 20px;
 }
 
 /*button styling when mouse hovers over*/
 .custom-btn:hover {
-    background-color: #F1C376;
+    background-color: red;
     color: white;
 }
 
@@ -77,6 +97,11 @@ label {
 /*navigation links font size*/
 .nav-link {
     font-size: 30px;
+}
+
+/*navigation dropdown links font size*/
+.dropdown-item {
+    font-size: 20px;
 }
 
 /*shopping cart link*/
@@ -172,11 +197,11 @@ label {
     font-size: 25px;
 }
 
-/*card styling*/
+/*product card styling*/
 .custom-card {
     background-color: black;
     color: white;
-    border: 2px solid red;
+    /* border: 2px solid red; */
 }
 
 
