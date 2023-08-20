@@ -78,7 +78,6 @@ label {
 /*--------------------------------------Navigation Bar-----------------------------------------*/
 
 .custom-navbar {
-    /* background-color: black; */
     position: relative;
 }
 
@@ -90,7 +89,6 @@ label {
     left: 0;
     width: 100%;
     height: 2px;
-    /* background-color: white; White line color */
 }
 
 /* Change the text color of the navbrand link and navlinks*/
@@ -308,13 +306,18 @@ a:link {
 
 
 /*--------------------------------------Product Details-----------------------------------------*/
+/*container holds page contents*/
 .details-container {
-    margin-top: 100px;
+    max-width: 1400px;
+    margin-top: 10px;
 }
 
+/*product image*/
 .product_details_img {
-    width:auto;
-    height: 400px;
+    display: block; /*take up full width of parent container*/
+    margin: 0 auto; /*center image horizontally*/
+    max-width: 100%; /*ensure image won't exceed its container*/
+    max-height: 100%;
 }
 
 /*--------------------------------------Shopping Cart Page-----------------------------------------*/

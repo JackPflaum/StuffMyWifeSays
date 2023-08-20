@@ -4,16 +4,13 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}{{ product.product_name }}{% endblock %}
-
 {% block content %}
-
 <div class="container details-container">
     <div class="row align-items-center justify-content-center">
-        <div class="col-6 text-center border p-1">
+        <div class="col-lg-8 col-md-12">
             <img class="product_details_img" src="{{ product.image.url }}" alt="{{ product.category.category_name }}: {{ product.product_name }}"/>
         </div>
-        <div class="col-6">
+        <div class="col-lg-4 col-md-12">
             <h4>{{ product.product_name }}</h4>
             <p>${{ product.price }}</p>
             <form method="post">
@@ -31,9 +28,9 @@
                 {% endif %}
 
                 {% if product_in_cart %}
-                <a href="{% url 'shopping_cart' %}" class="btn btn-secondary">Added to Cart</a>
+                <a href="{% url 'shopping_cart' %}" class="btn btn-secondary mr-1">Already in Cart</a>
                 {% else %}
-                <input type="submit" value="Add to Cart" class="btn custom-btn">
+                <input type="submit" value="Add to Cart" class="btn custom-btn mr-1">
                 {% endif %}
                 <a href="{% url 'products' product.category.id %}" class="btn btn-secondary">Back to Products</a>
             </form>
