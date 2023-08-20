@@ -194,6 +194,10 @@ label {
 
 
 /*--------------------------------------Products Page-----------------------------------------*/
+/*width of products page container for content*/
+.products-container {
+    max-width: 1400px;
+}
 
 /*category column setup*/
 .categories-column {
