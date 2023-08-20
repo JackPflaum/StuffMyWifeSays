@@ -8,14 +8,14 @@
         <h1>Contact Us</h1>
     </header>
     <div class='row mb-3'>
-        <div class='col-6'>
+        <div class='col-lg-6 col-md-12'>
             <p>If you have any questions or want to give feedback please contact us using the form or contact details below</p>
             <p><i class="fas fa-envelope"></i> shitmywifesays@email.com.au</p>
             <p><i class="fas fa-phone"></i> 1800 111 999</p>
             <p><i class="fab fa-facebook"></i> www.facebook.com/sh#tmywifesays</p>
             <p><i class="fab fa-instagram"></i> www.instagram.com/sh#tmywifesays</p>
         </div>
-        <div class='col-6'>
+        <div class='col-lg-6 col-md-12'>
             <form method="post">
                 {% csrf_token %}
                 {{ contact_form|crispy }}
