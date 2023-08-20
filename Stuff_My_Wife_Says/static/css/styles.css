@@ -64,6 +64,7 @@ label {
 /*button styling when mouse hovers over*/
 .custom-btn:hover {
     background-color: white;
+    border: 2px solid white;
     color: red;
 }
 
@@ -134,7 +135,7 @@ label {
 /*line either side of heading*/
 .home-heading h1:before,
 .home-heading h1:after {
-    background-color: #333;
+    background-color: red;
     content: "";
     display: inline-block;
     height: 1px;
@@ -211,10 +212,7 @@ label {
 .custom-card {
     background-color: black;
     color: white;
-    /* border: 2px solid red; */
 }
-
-
 
 /*--------------------------------------Products Pagination-----------------------------------------*/
 
@@ -249,9 +247,9 @@ label {
 }
 
 .pagination_rounded ul li a:hover {
-    background: #4285f4;
+    background: red;
     color: #fff;
-    border: 1px solid #4285f4;
+    border: 1px solid red;
 }
 
 a:link {
@@ -270,19 +268,20 @@ a:link {
 .pagination_rounded ul li a,
 .pagination_rounded ul li .current_page {
     float: left;
-    color: #4285f4;
+    color: red;
     border-radius: 50%;
     line-height: 30px;
     height: 30px;
     width: 30px;
     text-align: center;
     margin-bottom: 40px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid red;
 }
 
-
+/*current page number is highlighted red*/
 .current_page {
-    color: black!important;
+    background-color: red;
+    color: white !important;
 }
 
 .pagination_rounded .prev i {
@@ -295,6 +294,13 @@ a:link {
     height: 34px;
     line-height: 34px;
 }
+
+/*<i> tag in turns white on hover*/
+.pagination_rounded .prev:hover i,
+.pagination_rounded .next:hover i {
+    color: white;
+}
+
 
 
 /*--------------------------------------Product Details-----------------------------------------*/
