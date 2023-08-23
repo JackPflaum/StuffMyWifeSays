@@ -7,24 +7,44 @@
 {% block content %}
 
 <div class="container">
-    <h3>Checkout</h3>
+    <h1>Checkout</h1>
     <div class="row">
-        <div class="col-6">
+        <div class="col-lg-6 col-md-12 mb-4">
             <form method="post">
                 {% csrf_token %}
                 <div>
                     <h4>Customer Details</h4>
                     {{ customer_details_form|crispy }}
                  </div>
-                 <div>
+                 <div class="mt-5">
                     <h4>Payment</h4>
                     {{ payment_form|crispy }}
-                    <input type="submit" value='Place Order' class="btn btn-primary">
+                    <input type="submit" value='Place Order' class="btn custom-btn">
                 </div>
             </form>
         </div>
-        <div class="col-6">
+        <div class="col-lg-6 col-md-12">
             <h4>Order Summary</h4>
+            {% for item in shopping_cart_items %}
+            <div class="d-flex">
+                <div>
+                    <p class="mb-0">{{ item.product }}</p>
+                    <p><small>Quantity: {{ item.quantity }} x {{ item.product.category.category_name }}</small></p>
+                </div>
+                <div class="ml-auto">
+                    <p>${{ item.calculate_cart_item_price }}</p>
+                </div>
+            </div>
+            <hr style="border-color: white;">
+            {% endfor %}
+            <div class="d-flex">
+                <div>
+                    <p>Total Price</p>
+                </div>
+                <div class="ml-auto">
+                    <p>${{ shopping_cart.order_total_price }}</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

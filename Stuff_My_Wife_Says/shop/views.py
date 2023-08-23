@@ -220,7 +220,12 @@ def checkout(request, cart_uuid):
     payment_form = PaymentForm(request.POST or None)
     customer_details_form = CustomerDetailsForm(request.POST or None)
 
-    context = {'payment_form': payment_form, 'customer_details_form': customer_details_form}
+    shopping_cart = get_object_or_404(ShoppingCartSession, cart_uuid=cart_uuid)
+    shopping_cart_items = ShoppingCartItem.objects.filter(cart=shopping_cart)
+
+    context = {'payment_form': payment_form, 'customer_details_form': customer_details_form,
+               'shopping_cart_items': shopping_cart_items,
+                                                          'shopping_cart': shopping_cart}
 
     if request.method == 'POST':
 
