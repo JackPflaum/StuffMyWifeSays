@@ -302,7 +302,7 @@ a:link {
     line-height: 34px;
 }
 
-/*<i> tag in turns white on hover*/
+/*<i> tag turns white on hover*/
 .pagination_rounded .prev:hover i,
 .pagination_rounded .next:hover i {
     color: white;
@@ -326,14 +326,26 @@ a:link {
 }
 
 /*--------------------------------------Shopping Cart Page-----------------------------------------*/
+/*shopping cart page container size*/
+.cart-container {
+    max-width: 1400px;
+    margin-bottom: 15px;
+}
+
 /*cart item image*/
 .cart-img {
     width:auto;
     height: 200px;
 }
 
+/*table content font colour white*/
 .table {
     color: white;
+}
+
+/*vertically center table content*/
+.table td {
+    vertical-align: middle;
 }
 
 /*table header font-size*/
@@ -346,8 +358,30 @@ td {
     font-size: 25px;
 }
 
+/*product description link back to product_details view*/
 .cart-link {
     font-size: 30px;
+}
+
+/*quantity funstional buttons*/
+.quantity-minus,
+.quantity-plus {
+    background: transparent;
+    color: red;
+    border: none;
+    width: 30px;
+    height: 35px;
+    line-height: 30px;
+    font-size: 25px;
+    cursor: pointer;
+    transition: color 0.3s;
+    outline: none;
+}
+
+/*quantity funstional buttons on hover*/
+.quantity-minus:hover,
+.quantity-plus:hover {
+    color: white;
 }
 
 

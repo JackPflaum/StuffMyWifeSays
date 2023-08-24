@@ -4,58 +4,61 @@
 
 
 {% block content %}
-<h3>Shopping Cart</h3>
-<hr>
-<p>You have {{ shopping_cart_items.count }} items in your shopping cart.</p>
-<table class="table text-center">
-    <tr>
-        <th>IMAGE</th>
-        <th>PRODUCT</th>
-        <th>SIZE</th>
-        <th>UNIT PRICE</th>
-        <th>QUANTITY</th>
-        <th>SUBTOTAL</th>
-        <th></th>
-    </tr>
-    {% for item in shopping_cart_items %}
-    <tr>
-        <td><a href="{% url 'product_details' item.product.pk %}">
-          <img class="cart-img" src="{{ item.product.image.url }}"alt="{{ item.product.category.category_name }}: {{ item.product.product_name}}">
-        </a></td> 
-        <td>
-          <div>
-            <a class="cart-link" href="{% url 'product_details' item.product.pk %}">{{ item.product.product_name }}</a>
-            <p>Category: {{ item.product.category.category_name }}</p>
-          </div>
-        </td>
-        <td>{% if item.tshirt_size %} {{ item.tshirt_size }} {% else %} - {% endif %}</td>
-        <td>${{ item.product.price }}</td>
-        <td>
-            <div class="quantity-control">
-                <button class="quantity-minus" data-item-id="{{ item.pk }}">-</button>
-                <span class="quantity-display" data-item-id="{{ item.pk }}">{{ item.quantity }}</span>
-                <button class="quantity-plus" data-item-id="{{ item.pk }}">+</button>
-            </div>
-        </td>
-        <td>${{ item.calculate_cart_item_price }}</td>
-        <td><a href="{% url 'remove_item' item.pk %}" class="btn btn-secondary">Remove</a><td>  
-    </tr>
-    {% endfor %}
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><b>TOTAL</b></td>
-        <td class="total-price"><b>${{ shopping_cart.order_total_price }}</b></td>
-        <td></td>
-    </tr>
-</table>
+<div class="container cart-container">
+    <h3>Shopping Cart</h3>
+    <table class="table text-center">
+        <tr>
+            <th>IMAGE</th>
+            <th>PRODUCT</th>
+            <th>SIZE</th>
+            <th>UNIT PRICE</th>
+            <th>QUANTITY</th>
+            <th>SUBTOTAL</th>
+            <th></th>
+        </tr>
+        {% for item in shopping_cart_items %}
+        <tr>
+            <td>
+                <a href="{% url 'product_details' item.product.pk %}">
+                    <img class="cart-img" src="{{ item.product.image.url }}" alt="{{ item.product.category.category_name }}: {{ item.product.product_name }}">
+                </a>
+            </td>
+            <td>
+                <div>
+                    <a class="cart-link" href="{% url 'product_details' item.product.pk %}">{{ item.product.product_name }}</a>
+                    <p>Category: {{ item.product.category.category_name }}</p>
+                </div>
+            </td>
+            <td>{% if item.tshirt_size %} {{ item.tshirt_size }} {% else %} --- {% endif %}</td>
+            <td>${{ item.product.price }}</td>
+            <td>
+                <div class="quantity-control">
+                    <button class="quantity-minus" data-item-id="{{ item.pk }}">-</button>
+                    <span class="quantity-display" data-item-id="{{ item.pk }}">{{ item.quantity }}</span>
+                    <button class="quantity-plus" data-item-id="{{ item.pk }}">+</button>
+                </div>
+            </td>
+            <td>${{ item.calculate_cart_item_price }}</td>
+            <td><a href="{% url 'remove_item' item.pk %}" class="btn btn-secondary">Remove</a></td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b>TOTAL</b></td>
+            <td class="total-price"><b>${{ shopping_cart.order_total_price }}</b></td>
+            <td></td>
+        </tr>
+    </table>
 
-<div>
-  <a href="{% url 'home' %}" class="btn btn-secondary">Continue Shopping</a>
-  <a href="{% url 'checkout' shopping_cart.cart_uuid %}" class="btn custom-btn">Checkout</a>
+    <div class="d-flex justify-content-between">
+        <a href="{% url 'home' %}" class="btn btn-secondary">Continue Shopping</a>
+        <a href="{% url 'checkout' shopping_cart.cart_uuid %}" class="btn custom-btn">Checkout</a>
+    </div>
 </div>
+
 
 <!--plus and minus functionality for item quantity and dynamic prices-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
