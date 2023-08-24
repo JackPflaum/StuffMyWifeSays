@@ -2,51 +2,109 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}Checkout{% endblock %}
-
 {% block content %}
-
-<div class="container">
+<div class="container checkout-container">
     <h1>Checkout</h1>
     <div class="row">
-        <div class="col-lg-6 col-md-12 mb-4">
+        <div class="col-lg-4 col-md-12 mb-4">
             <form method="post">
                 {% csrf_token %}
-                <div>
-                    <h4>Customer Details</h4>
-                    {{ customer_details_form|crispy }}
-                 </div>
-                 <div class="mt-5">
-                    <h4>Payment</h4>
-                    {{ payment_form|crispy }}
-                    <input type="submit" value='Place Order' class="btn custom-btn">
+
+                <!--Customer Details-->
+                <div class="checkout-box">
+                    <h4 class="underlined-heading">Customer Details</h4>
+                    <div class="row">
+                        <div class="col">
+                            {{ customer_details_form.first_name|as_crispy_field }}
+                        </div>
+                        <div class="col">
+                            {{ customer_details_form.last_name|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{ customer_details_form.email|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{ customer_details_form.phone|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{ customer_details_form.address|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{ customer_details_form.suburb|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{ customer_details_form.state|as_crispy_field }}
+                        </div>
+                        <div class="col">
+                            {{ customer_details_form.post_code|as_crispy_field }}
+                        </div>
+                    </div>
                 </div>
-            </form>
         </div>
-        <div class="col-lg-6 col-md-12">
-            <h4>Order Summary</h4>
-            {% for item in shopping_cart_items %}
-            <div class="d-flex">
-                <div>
-                    <p class="mb-0">{{ item.product }}</p>
-                    <p><small>Quantity: {{ item.quantity }} x {{ item.product.category.category_name }}</small></p>
+
+        <!--Payment Details-->
+        <div class="col-lg-4">
+            <div class="checkout-box">
+                <h4 class="underlined-heading">Payment</h4>
+                <div class="row">
+                    <div class="col">
+                        {{ payment_form.name_on_card|as_crispy_field }}
+                    </div>
                 </div>
-                <div class="ml-auto">
-                    <p>${{ item.calculate_cart_item_price }}</p>
+                <div class="row">
+                    <div class="col">
+                        {{ payment_form.card_number|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{ payment_form.expiry|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        {{ payment_form.cvc|as_crispy_field }}
+                    </div>
                 </div>
             </div>
-            <hr style="border-color: white;">
-            {% endfor %}
-            <div class="d-flex">
-                <div>
-                    <p>Total Price</p>
+        </div>
+
+        <!--Order Summary-->
+        <div class="col-lg-4 col-md-12">
+            <div class="checkout-box">
+                <h4 class="underlined-heading">Order Summary</h4>
+                {% for item in shopping_cart_items %}
+                <div class="d-flex">
+                    <div>
+                        <p class="mb-0">{{ item.product }}</p>
+                        <p><small>Quantity: {{ item.quantity }} x {{ item.product.category.category_name }}</small></p>
+                    </div>
+                    <div class="ml-auto">
+                        <p>${{ item.calculate_cart_item_price }}</p>
+                    </div>
                 </div>
-                <div class="ml-auto">
-                    <p>${{ shopping_cart.order_total_price }}</p>
+                <hr style="border-color: white;">
+                {% endfor %}
+                <div class="d-flex">
+                    <div>
+                        <p>Total Price</p>
+                    </div>
+                    <div class="ml-auto">
+                        <p>${{ shopping_cart.order_total_price }}</p>
+                    </div>
                 </div>
+                <input type="submit" value='Place Order' class="btn custom-btn w-100">
+            </form>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}
