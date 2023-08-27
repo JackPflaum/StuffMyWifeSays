@@ -310,8 +310,8 @@ a:link {
 .product_details_img {
     display: block; /*take up full width of parent container*/
     margin: 0 auto; /*center image horizontally*/
-    max-width: 100%; /*ensure image won't exceed its container*/
-    max-height: 100%;
+    max-width: 70%; /*ensure image won't exceed its container*/
+    max-height: 70%;
 }
 
 /*--------------------------------------Shopping Cart Page-----------------------------------------*/
