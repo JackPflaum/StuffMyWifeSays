@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>Shopping Cart</h3>
-<hr>
-<p>Shopping cart is empty.</p>
-<a href="#">Start shopping</a>
+<div class="container">
+    <div>
+        <header>
+            <h3>Shopping Cart</h3>
+        </header>
+        <hr>
+        <p>No items currently in your shopping cart. Let's get shopping!</p>
+        <a href="{% url 'home' %}" class="btn custom-btn">Continue shopping</a>
+    </div>
+</div>
 {% endblock %}
