@@ -15,7 +15,7 @@ class Category(models.Model):
     ]
     
     category_name = models.CharField(max_length=50, choices=CATEGORY_CHOICES, unique=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
         """auto-populate slug field"""
