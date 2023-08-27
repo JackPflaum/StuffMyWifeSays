@@ -75,7 +75,7 @@ def product_details(request, pk):
                     return redirect('products', pk=product.category.pk)
                     
                 except ShoppingCartSession.DoesNotExist:
-                    messages.error('Woops! Soemthing went wrong while adding the item to your cart. Please try again.')
+                    messages.warning('Woops! Something went wrong while adding the item to your cart. Please try again.')
                     return render(request, 'product_details.html', context)
             else:
                 # if the user doesn't have a cart session than
@@ -272,7 +272,7 @@ def checkout(request, cart_uuid):
             return redirect('purchase_confirmed', order_number=order_number)
         else:
             # if the forms are not valid, re-render the checkout page with the forms and error messages
-            messages.error(request, 'Woops! Something went wrong when filling out the form. Please try again.')
+            messages.warning(request, 'Woops! Something went wrong when filling out the form. Please try again.')
             return render(request, 'checkout.html', context)
     else:
         return render(request, 'checkout.html', context)
