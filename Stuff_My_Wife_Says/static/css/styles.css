@@ -160,7 +160,6 @@ label {
 /* align header center and away from the top*/
 .home-heading {
     text-align: center;
-    margin-top: 100px;
 }
 
 .home-heading h1 {
