@@ -197,11 +197,6 @@ label {
 
 
 /*--------------------------------------Products Page-----------------------------------------*/
-/*width of products page container for content*/
-.products-container {
-    max-width: 1400px;
-}
-
 /*category column setup*/
 .categories-column {
     display: flex;
@@ -224,11 +219,11 @@ label {
 /*--------------------------------------Products Pagination-----------------------------------------*/
 
 /*pushes paginator down to the bottom of the screen*/
-.container {
+/* .container {
     display: flex;
     flex-direction: column;
     min-height: 90vh;
-}
+} */
 
 /*centers the paginator*/
 .pagination_rounded {
@@ -311,12 +306,6 @@ a:link {
 
 
 /*--------------------------------------Product Details-----------------------------------------*/
-/*container holds page contents*/
-.details-container {
-    max-width: 1400px;
-    margin-top: 10px;
-}
-
 /*product image*/
 .product_details_img {
     display: block; /*take up full width of parent container*/
@@ -326,12 +315,6 @@ a:link {
 }
 
 /*--------------------------------------Shopping Cart Page-----------------------------------------*/
-/*shopping cart page container size*/
-.cart-container {
-    max-width: 1400px;
-    margin-bottom: 15px;
-}
-
 /*cart item image*/
 .cart-img {
     width:auto;
@@ -386,11 +369,6 @@ td {
 
 
 /*--------------------------------------Checkout-----------------------------------------*/
-/*checkout page container size*/
-.checkout-container {
-    max-width: 1400px;
-}
-
 /*distinct boxes for customer details, payment and order summary*/
 .checkout-box {
     border: 2px solid white;
