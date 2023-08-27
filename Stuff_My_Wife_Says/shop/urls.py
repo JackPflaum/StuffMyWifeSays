@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from shop.views import (HomePageView, AboutView, CategoryView)
+from shop.views import (HomePageView, AboutView)
 from django.conf import settings
 from django.conf.urls.static import static
 
