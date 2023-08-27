@@ -55,6 +55,15 @@ class Product(models.Model):
                 num += 1
             
             self.slug = unique_slug
+        
+        # allow multiple products to have the same image file.
+        # this allows me to create multiple 'Lorem Ipsum' objects using the same image
+        # rather then duplicate images with different file names.
+        existing_image = self.get_existing_image()
+
+        if existing_image:
+            # assign the existing database image to this new instance
+            self.image = existing_image.image
 
         # sets the image to the default image when no image is selected during model creation.
         # avoids multiple copies of the default image.
@@ -63,6 +72,17 @@ class Product(models.Model):
             with open(default_image_path, 'rb') as f:
                 self.image.save('Image_not_available.png', File(f), save=False)
         super().save(*args, **kwargs)
+
+    def get_existing_image(self):
+        """gets the existing image from the Product model if it exists already"""
+        # extract the filename from the image field
+        # basename extracts the base filename "self.image.name" from the relative path of uploaded image.
+        # i.e self.image.name = "products_images/Lorem_Ipsum_Mug.jpg"
+        filename = os.path.basename(self.image.name)
+
+        # searches for an existing image in the Product model. Case-insensitive search.
+        existing_image = Product.objects.filter(image__iendswith=filename).first()
+        return existing_image
     
     def __str__(self):
         return self.product_name
@@ -71,7 +91,7 @@ def custom_slugify(name):
     """remove invalid characters from name before slugify"""
     cleaned_name = re.sub(r'[\'!#]', '', name)   # replaces occurences of ', '!', and '#' with empty string
     return slugify(cleaned_name)
-
+    
 
 class ShoppingCartSession(models.Model):
     """Store users shopping cart session that is created when the user adds an item to the shopping cart"""
