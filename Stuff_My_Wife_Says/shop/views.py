@@ -16,10 +16,6 @@ class HomePageView(TemplateView):
     template_name = 'home.html'
 
 
-class CategoryView(TemplateView):
-    template_name = 'category.html'
-
-
 def products(request, pk):
     """products page to display products available to the customer in card format."""
     category = get_object_or_404(Category, pk=pk)
