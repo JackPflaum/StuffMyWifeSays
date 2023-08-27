@@ -16,9 +16,9 @@ class HomePageView(TemplateView):
     template_name = 'home.html'
 
 
-def products(request, pk):
+def products(request, category_slug):
     """products page to display products available to the customer in card format."""
-    category = get_object_or_404(Category, pk=pk)
+    category = get_object_or_404(Category, slug=category_slug)
     products = Product.objects.filter(category=category).order_by('price')
 
     # create Paginator object and pass query_set and number of items per page
@@ -38,9 +38,9 @@ def products(request, pk):
     return render(request, 'products.html', context)
 
 
-def product_details(request, pk):
+def product_details(request, product_slug):
     """diplay product information and allow users to add product to cart."""
-    product = get_object_or_404(Product, pk=pk)
+    product = get_object_or_404(Product, slug=product_slug)
 
     # retrieve the form for the corresponding product.
     # get the tshirt form, otherwise get the mug form.

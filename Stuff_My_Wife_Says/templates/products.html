@@ -13,7 +13,7 @@
             <h3 class="uppercase">Categories</h3>
             {% if categories %}
                 {% for category in categories %}
-                    <a class="category-font-size" href="{% url 'products' category.pk %}">{{ category.category_name }}</a>
+                    <a class="category-font-size" href="{% url 'products' category.slug %}">{{ category.category_name }}</a>
                 {% endfor %}
             {% endif %}
         </div>
@@ -23,11 +23,11 @@
                 {% for product in products %}
                 <div class="col-lg-3 col-md-4 col-sm-12">
                     <div class="card mb-2 custom-card">
-                        <a href="{% url 'product_details' product.pk %}" title="{{ product.product_name }}"><img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.product_name }}"></a>
+                        <a href="{% url 'product_details' product.slug %}" title="{{ product.product_name }}"><img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.product_name }}"></a>
                         <div class="card-body">
                             <h4 class="card-title">{{ product.product_name }}</h4>
                             <p class="card-text">${{ product.price }}</p>
-                            <a href="{% url 'product_details' product.pk %}" class="btn custom-btn">View Product</a>
+                            <a href="{% url 'product_details' product.slug %}" class="btn custom-btn">View Product</a>
                         </div>
                     </div>
                 </div>

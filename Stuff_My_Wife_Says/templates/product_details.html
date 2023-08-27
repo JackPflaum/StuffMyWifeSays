@@ -32,7 +32,7 @@
                 {% else %}
                 <input type="submit" value="Add to Cart" class="btn custom-btn mr-1">
                 {% endif %}
-                <a href="{% url 'products' product.category.id %}" class="btn btn-secondary">Back to Products</a>
+                <a href="{% url 'products' product.category.slug %}" class="btn btn-secondary">Back to Products</a>
             </form>
         </div>
     </div>
