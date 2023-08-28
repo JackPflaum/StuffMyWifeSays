@@ -108,7 +108,7 @@ class Product(models.Model):
         return existing_image
     
     def __str__(self):
-        return self.product_name
+        return f'{self.category}: {self.product_name}'
     
 
 class ShoppingCartSession(models.Model):
