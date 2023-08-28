@@ -36,42 +36,65 @@ class Product(models.Model):
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
-        """auto-populate slug field and image field if no image"""
+        """Auto-populate slug field and set image field if no image.
+        Allow multiple products to have the same image file."""
 
-        # auto-populate slug field
-        if not self.slug:
-            # slugify product name
-            base_slug = custom_slugify(self.product_name)
+        # auto-populate slug field if it doesn't exist
+        self.auto_populate_slug()
 
-            category = custom_slugify(self.category.category_name)
-
-            # add category name to slug field
-            unique_slug = f'{base_slug}-{category}'
-            num = 1
-
-            # if slug already exists then add incremental number to the end
-            while Product.objects.filter(slug=unique_slug).exists():
-                unique_slug = f'{base_slug}-{category}-{num}'
-                num += 1
-            
-            self.slug = unique_slug
+        # sets the image to the default image when no image is selected during model creation.
+        # avoids multiple copies of the default image with different names.
+        self.set_default_image()
         
         # allow multiple products to have the same image file.
         # this allows me to create multiple 'Lorem Ipsum' objects using the same image
         # rather then duplicate images with different file names.
+        self.reuse_existing_image()
+
+        super().save(*args, **kwargs)
+    
+    def auto_populate_slug(self):
+        """auto-populate slug field if it doesn't exist"""
+        if not self.slug:
+            # slugify product name
+            base_slug = self.custom_slugify(self.product_name)
+
+            category_slug = self.custom_slugify(self.category.category_name)
+
+            # add category name to slug field
+            unique_slug = f'{base_slug}-{category_slug}'
+            num = 1
+
+            # if slug already exists then add incremental number to the end
+            while Product.objects.filter(slug=unique_slug).exists():
+                unique_slug = f'{base_slug}-{category_slug}-{num}'
+                num += 1
+            
+            self.slug = unique_slug
+    
+    def custom_slugify(self, name):
+        """remove invalid characters from name before slugify"""
+        cleaned_name = re.sub(r'[\'!#]', '', name)   # replaces occurences of ', '!', and '#' with empty string
+        return slugify(cleaned_name)
+    
+    def set_default_image(self):
+        """sets the image to the default image when no image is selected during model creation.
+        Avoids multiple copies of the default image with different names."""
+        if not self.image:
+            default_image_path = os.path.join(settings.MEDIA_ROOT, 'product_images/Images_not_available.png')
+            # 'with' statement ensures file is closed properly after block of code is executed.
+            # open image at given file path in binary as 'f' object.
+            with open(default_image_path, 'rb') as f:
+                # wrap binary data into Django 'File' object and assign to image field of current instance.
+                self.image.save('Image_not_available.png', File(f), save=False)
+    
+    def reuse_existing_image(self):
+        """reuse an existing image if available"""
         existing_image = self.get_existing_image()
 
         if existing_image:
             # assign the existing database image to this new instance
             self.image = existing_image.image
-
-        # sets the image to the default image when no image is selected during model creation.
-        # avoids multiple copies of the default image.
-        if not self.image:
-            default_image_path = os.path.join(settings.MEDIA_ROOT, 'product_images/Image_not_available.png')
-            with open(default_image_path, 'rb') as f:
-                self.image.save('Image_not_available.png', File(f), save=False)
-        super().save(*args, **kwargs)
 
     def get_existing_image(self):
         """gets the existing image from the Product model if it exists already"""
@@ -86,11 +109,6 @@ class Product(models.Model):
     
     def __str__(self):
         return self.product_name
-
-def custom_slugify(name):
-    """remove invalid characters from name before slugify"""
-    cleaned_name = re.sub(r'[\'!#]', '', name)   # replaces occurences of ', '!', and '#' with empty string
-    return slugify(cleaned_name)
     
 
 class ShoppingCartSession(models.Model):
