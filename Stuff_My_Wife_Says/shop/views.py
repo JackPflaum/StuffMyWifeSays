@@ -72,7 +72,7 @@ def product_details(request, product_slug):
                         cart_item.tshirt_size = form.cleaned_data['size']
                     cart_item.save()
 
-                    return redirect('products', pk=product.category.pk)
+                    return redirect('products', category_slug=product.category.slug)
                     
                 except ShoppingCartSession.DoesNotExist:
                     messages.warning('Woops! Something went wrong while adding the item to your cart. Please try again.')
@@ -99,7 +99,7 @@ def product_details(request, product_slug):
                 cart_item.save()
                 
                 # return back to products page
-                return redirect('products', pk=product.category.pk)
+                return redirect('products', category_slug=product.category.slug)
     else:        
         return render(request, 'product_details.html', context)
 
